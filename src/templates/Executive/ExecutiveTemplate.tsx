@@ -3,7 +3,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Globe, Linkedin, Calendar, Award, Briefcase, GraduationCap, FileText, ExternalLink, Crown, Target, Users } from 'lucide-react'
+import { Mail, Phone, MapPin, Globe, Linkedin, Calendar, Award, Briefcase, GraduationCap, FileText, ExternalLink, Crown, Target, Users, Languages } from 'lucide-react'
 import { TemplateProps } from '../index'
 import styles from './ExecutiveTemplate.module.css'
 
@@ -169,8 +169,8 @@ const ExecutiveTemplate: React.FC<TemplateProps> = ({ userData }) => {
         </motion.section>
       )}
 
-      {/* Core Competencies */}
-      {userData.skills.length > 0 && (
+      {/* Technical Skills */}
+      {userData.technicalSkills?.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -181,14 +181,47 @@ const ExecutiveTemplate: React.FC<TemplateProps> = ({ userData }) => {
             <div className={styles.sectionIconWrapper}>
               <Award className={styles.sectionIcon} />
             </div>
-            <h2 className={styles.sectionTitle}>Core Executive Competencies</h2>
+            <h2 className={styles.sectionTitle}>Technical Competencies</h2>
           </div>
           
           <div className={styles.competenciesGrid}>
-            {userData.skills.map((skill, index) => (
+            {userData.technicalSkills.map((skill, index) => (
               <motion.div
                 key={index}
                 className={styles.competencyCard}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Award className={styles.competencyIcon} />
+                <span className={styles.competencyText}>{skill}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* Leadership & Soft Skills */}
+      {userData.softSkills?.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className={styles.section}
+        >
+          <div className={styles.sectionHeader}>
+            <div className={styles.sectionIconWrapper}>
+              <Users className={styles.sectionIcon} />
+            </div>
+            <h2 className={styles.sectionTitle}>Leadership & Executive Skills</h2>
+          </div>
+          
+          <div className={styles.competenciesGrid}>
+            {userData.softSkills.map((skill, index) => (
+              <motion.div
+                key={index}
+                className={styles.softCompetencyCard}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.05 }}
@@ -202,12 +235,82 @@ const ExecutiveTemplate: React.FC<TemplateProps> = ({ userData }) => {
         </motion.section>
       )}
 
+      {/* Languages */}
+      {userData.languages?.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className={styles.section}
+        >
+          <div className={styles.sectionHeader}>
+            <div className={styles.sectionIconWrapper}>
+              <Languages className={styles.sectionIcon} />
+            </div>
+            <h2 className={styles.sectionTitle}>Languages</h2>
+          </div>
+          
+          <div className={styles.languagesGrid}>
+            {userData.languages.map((language, index) => (
+              <motion.div 
+                key={language.id} 
+                className={styles.languageCard}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className={styles.languageContent}>
+                  <span className={styles.languageName}>{language.name}</span>
+                  <span className={styles.languageProficiency}>{language.proficiency}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* Custom Sections */}
+      {userData.customSections?.map((section, index) => (
+        <motion.section
+          key={section.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 + index * 0.1 }}
+          className={styles.section}
+        >
+          <div className={styles.sectionHeader}>
+            <div className={styles.sectionIconWrapper}>
+              <FileText className={styles.sectionIcon} />
+            </div>
+            <h2 className={styles.sectionTitle}>{section.title}</h2>
+          </div>
+          
+          <div className={styles.customContent}>
+            {section.type === 'list' && section.items ? (
+              <ul className={styles.customList}>
+                {section.items.map((item, itemIndex) => (
+                  <li key={itemIndex} className={styles.customListItem}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className={styles.customText}>
+                <p className={styles.customParagraph}>
+                  {section.content}
+                </p>
+              </div>
+            )}
+          </div>
+        </motion.section>
+      ))}
+
       {/* Strategic Projects */}
       {userData.projects.some(project => project.name || project.description) && (
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.4 }}
           className={styles.section}
         >
           <div className={styles.sectionHeader}>

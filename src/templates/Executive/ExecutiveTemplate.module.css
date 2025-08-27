@@ -214,6 +214,73 @@
   font-family: 'Inter', sans-serif;
 }
 
+.softCompetencyCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-xl shadow-md border border-gray-200/50 dark:border-gray-700/50 text-center;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(147, 51, 234, 0.05));
+}
+
+.softCompetencyCard:hover {
+  @apply bg-white dark:bg-gray-800 shadow-lg;
+  transform: translateY(-2px);
+}
+
+/* Languages Grid */
+.languagesGrid {
+  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.languageCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-xl shadow-md border border-gray-200/50 dark:border-gray-700/50;
+  transition: all 0.3s ease;
+}
+
+.languageCard:hover {
+  @apply bg-white dark:bg-gray-800 shadow-lg;
+  transform: translateY(-2px);
+}
+
+.languageContent {
+  @apply flex justify-between items-center;
+}
+
+.languageName {
+  @apply font-semibold text-gray-900 dark:text-white;
+  font-family: 'Inter', sans-serif;
+}
+
+.languageProficiency {
+  @apply text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded;
+}
+
+/* Custom Sections */
+.customContent {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-md border border-gray-200/50 dark:border-gray-700/50;
+}
+
+.customList {
+  @apply list-disc list-inside space-y-3 text-gray-700 dark:text-gray-300;
+}
+
+.customListItem {
+  @apply leading-relaxed;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.customListItem::before {
+  content: '▸';
+  @apply absolute left-0 top-0 text-primary font-bold;
+}
+
+.customText {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+.customParagraph {
+  @apply leading-relaxed;
+}
+
 /* Strategic Projects Grid */
 .projectsGrid {
   @apply grid gap-8 lg:grid-cols-2;

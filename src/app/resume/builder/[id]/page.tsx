@@ -10,6 +10,7 @@ import { ResumeForm } from '@/components/resume/ResumeForm'
 import { DynamicResumePreview } from '@/components/resume/DynamicResumePreview'
 
 import { getTemplateById } from '../../../../templates'
+import { PDFGenerator } from '../../../../lib/pdfGenerator'
 
 // Default resume data structure
 const defaultResumeData = {
@@ -48,7 +49,10 @@ const defaultResumeData = {
       gpa: ''
     }
   ],
-  skills: [],
+  softSkills: [],
+  technicalSkills: [],
+  languages: [],
+  customSections: [],
   projects: [
     {
       id: '1',
@@ -58,8 +62,7 @@ const defaultResumeData = {
       link: ''
     }
   ],
-  certifications: [],
-  languages: []
+  certifications: []
 }
 
 export default function ResumeBuilderPage() {
@@ -130,199 +133,29 @@ export default function ResumeBuilderPage() {
   }
 
   const handleDownload = async () => {
+    if (!template) {
+      alert('Template not found. Please refresh the page and try again.')
+      return
+    }
+
     try {
-      // Find the resume preview element
-      const resumeElement = document.querySelector('[data-resume-preview]')
-      if (!resumeElement) {
-        console.error('Resume preview element not found')
-        return
-      }
-
-      // Try modern browser print to PDF first
-      if (typeof window !== 'undefined' && 'print' in window) {
-        // Get all stylesheets from the current document
-        let styles = ''
-        
-        // Get Tailwind and other CSS from the current document
-        for (let i = 0; i < document.styleSheets.length; i++) {
-          try {
-            const styleSheet = document.styleSheets[i]
-            if (styleSheet.href && styleSheet.href.includes('/_next/static/css/')) {
-              // This is a Next.js CSS file, fetch it
-              fetch(styleSheet.href)
-                .then(response => response.text())
-                .then(cssText => {
-                  styles += cssText
-                })
-                .catch(() => {})
-            } else if (styleSheet.cssRules) {
-              // Inline styles
-              for (let j = 0; j < styleSheet.cssRules.length; j++) {
-                styles += styleSheet.cssRules[j].cssText
-              }
-            }
-          } catch (e) {
-            // Cross-origin stylesheets will throw an error, skip them
-          }
-        }
-
-        // Create a new window with just the resume content and proper styles
-        const printWindow = window.open('', '_blank')
-        if (printWindow) {
-          printWindow.document.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <title>Resume - ${resumeData.personal.firstName} ${resumeData.personal.lastName}</title>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <script src="https://cdn.tailwindcss.com"></script>
-              <style>
-                body { 
-                  margin: 0; 
-                  padding: 20px; 
-                  font-family: Arial, sans-serif;
-                  background: white;
-                }
-                @media print { 
-                  body { margin: 0; padding: 10px; }
-                  * { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }
-                }
-                @page { 
-                  size: A4; 
-                  margin: 0.5in; 
-                }
-                
-                /* Template-specific styles */
-                .modern-professional {
-                  border-left: 4px solid #c10b41;
-                  background: white;
-                  border-radius: 8px;
-                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                  padding: 32px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                }
-                
-                .executive-suite {
-                  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-                  border-left: 4px solid #c10b41;
-                  border-radius: 8px;
-                  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-                  padding: 40px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                }
-                
-                .creative-portfolio {
-                  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-                  border-left: 4px solid #c10b41;
-                  border-radius: 16px;
-                  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                  padding: 32px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                }
-                
-                .minimalist-clean {
-                  background: white;
-                  border-radius: 8px;
-                  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                  border: 1px solid #e5e7eb;
-                  padding: 24px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                }
-                
-                .tech-innovator {
-                  background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-                  color: white;
-                  border-left: 4px solid #c10b41;
-                  border-radius: 8px;
-                  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                  padding: 32px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                }
-                
-                .classic-elegant {
-                  background: white;
-                  border-radius: 8px;
-                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                  border: 2px solid #e5e7eb;
-                  padding: 32px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                  font-family: 'Times New Roman', serif;
-                }
-                
-                ${styles}
-              </style>
-            </head>
-            <body>
-              ${resumeElement.outerHTML}
-            </body>
-            </html>
-          `)
-          printWindow.document.close()
-          printWindow.focus()
-          setTimeout(() => {
-            printWindow.print()
-            setTimeout(() => printWindow.close(), 1000)
-          }, 500)
-          return
-        }
-      }
-
-      // Fallback: Try to use html2canvas and jspdf
-      try {
-        const html2canvas = (await import('html2canvas')).default
-        const jsPDF = (await import('jspdf')).jsPDF
-
-        // Generate canvas from the resume element
-        const canvas = await html2canvas(resumeElement as HTMLElement, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#ffffff'
-        })
-
-        // Create PDF
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4'
-        })
-
-        const imgWidth = 210
-        const pageHeight = 295
-        const imgHeight = (canvas.height * imgWidth) / canvas.width
-        let heightLeft = imgHeight
-        let position = 0
-
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-        heightLeft -= pageHeight
-
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight
-          pdf.addPage()
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-          heightLeft -= pageHeight
-        }
-
-        const fileName = `${resumeData.personal.firstName || 'Resume'}_${resumeData.personal.lastName || 'Template'}_${template?.name?.replace(/\s+/g, '_') || 'CV'}.pdf`
-        pdf.save(fileName)
-
-      } catch (pdfError) {
-        console.error('PDF generation failed:', pdfError)
-        // Final fallback: open print dialog
-        window.print()
-      }
-
+      // Use the improved PDF generator
+      await PDFGenerator.generatePDF(resumeData, template, {
+        filename: `${resumeData.personal.firstName || 'Resume'}_${resumeData.personal.lastName || 'CV'}_${template.name.replace(/\s+/g, '_')}.pdf`,
+        quality: 1.0,
+        format: 'a4',
+        orientation: 'portrait'
+      })
     } catch (error) {
-      console.error('Error generating PDF:', error)
-      alert('Please use your browser\'s print function (Ctrl+P) to save as PDF.')
+      console.error('PDF generation failed:', error)
+      
+      // Fallback to print method
+      try {
+        await PDFGenerator.generatePDFViaPrint(resumeData, template)
+      } catch (printError) {
+        console.error('Print PDF generation also failed:', printError)
+        alert('PDF generation failed. Please use your browser\'s print function (Ctrl+P) to save as PDF.')
+      }
     }
   }
 

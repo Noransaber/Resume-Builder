@@ -162,6 +162,53 @@
   @apply bg-gray-300 dark:bg-gray-600;
 }
 
+.softSkillItem {
+  @apply inline-block px-4 py-2 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-200 rounded text-sm font-medium mr-3 mb-3;
+  border: 1px solid #bfdbfe;
+}
+
+.softSkillItem:hover {
+  @apply bg-blue-300 dark:bg-blue-600;
+}
+
+/* Languages Section */
+.languagesList {
+  @apply text-center space-y-3;
+}
+
+.languageItem {
+  @apply inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg mr-3 mb-3;
+}
+
+.languageName {
+  @apply font-medium text-gray-800 dark:text-gray-200;
+}
+
+.languageProficiency {
+  @apply text-sm text-gray-600 dark:text-gray-400 italic;
+}
+
+/* Custom Sections */
+.customContent {
+  @apply bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600;
+}
+
+.customList {
+  @apply list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300;
+}
+
+.customListItem {
+  @apply leading-relaxed;
+}
+
+.customText {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+.customParagraph {
+  @apply leading-relaxed mb-3 last:mb-0;
+}
+
 /* Dark mode adjustments */
 .container.dark {
   color: #f9fafb;

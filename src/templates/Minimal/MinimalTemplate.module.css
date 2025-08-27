@@ -89,6 +89,22 @@
   @apply text-gray-700 dark:text-gray-300 leading-relaxed;
 }
 
+.softSkillsList {
+  @apply text-blue-700 dark:text-blue-300 leading-relaxed;
+}
+
+.languagesList {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.customList {
+  @apply list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-1;
+}
+
+.customText {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
 /* Dark mode adjustments */
 .container.dark {
   color: #d1d5db;

@@ -3,7 +3,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Globe, Linkedin, Calendar, Award, Briefcase, GraduationCap, FileText, ExternalLink, Code, Terminal, Github } from 'lucide-react'
+import { Mail, Phone, MapPin, Globe, Linkedin, Calendar, Award, Briefcase, GraduationCap, FileText, ExternalLink, Code, Terminal, Github, Users, Languages } from 'lucide-react'
 import { TemplateProps } from '../index'
 import styles from './TechTemplate.module.css'
 
@@ -117,8 +117,8 @@ const TechTemplate: React.FC<TemplateProps> = ({ userData }) => {
         </div>
       </header>
 
-      {/* Skills Section */}
-      {userData.skills.length > 0 && (
+      {/* Technical Skills Section */}
+      {userData.technicalSkills?.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -138,28 +138,28 @@ const TechTemplate: React.FC<TemplateProps> = ({ userData }) => {
           <div className={styles.codeBlock}>
             <pre className={styles.codeContent}>
 {`{
-  "languages": [${userData.skills.filter(skill => 
+  "languages": [${userData.technicalSkills?.filter(skill => 
     ['javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'go', 'rust', 'php', 'ruby'].some(lang => 
       skill.toLowerCase().includes(lang)
     )
-  ).map(skill => `"${skill}"`).join(', ')}],
-  "frameworks": [${userData.skills.filter(skill => 
+  ).map(skill => `"${skill}"`).join(', ') || ''}],
+  "frameworks": [${userData.technicalSkills?.filter(skill => 
     ['react', 'vue', 'angular', 'node', 'express', 'django', 'flask', 'spring', 'laravel'].some(framework => 
       skill.toLowerCase().includes(framework)
     )
-  ).map(skill => `"${skill}"`).join(', ')}],
-  "tools": [${userData.skills.filter(skill => 
+  ).map(skill => `"${skill}"`).join(', ') || ''}],
+  "tools": [${userData.technicalSkills?.filter(skill => 
     ['git', 'docker', 'kubernetes', 'aws', 'azure', 'gcp', 'jenkins', 'terraform'].some(tool => 
       skill.toLowerCase().includes(tool)
     )
-  ).map(skill => `"${skill}"`).join(', ')}],
-  "other": [${userData.skills.filter(skill => 
+  ).map(skill => `"${skill}"`).join(', ') || ''}],
+  "other": [${userData.technicalSkills?.filter(skill => 
     !['javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'go', 'rust', 'php', 'ruby',
       'react', 'vue', 'angular', 'node', 'express', 'django', 'flask', 'spring', 'laravel',
       'git', 'docker', 'kubernetes', 'aws', 'azure', 'gcp', 'jenkins', 'terraform'].some(tech => 
         skill.toLowerCase().includes(tech)
       )
-  ).map(skill => `"${skill}"`).join(', ')}]
+  ).map(skill => `"${skill}"`).join(', ') || ''}]
 }`}
             </pre>
           </div>
@@ -335,6 +335,108 @@ const TechTemplate: React.FC<TemplateProps> = ({ userData }) => {
           </div>
         </motion.section>
       )}
+
+      {/* Soft Skills Section */}
+      {userData.softSkills?.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className={styles.section}
+        >
+          <div className={styles.sectionHeader}>
+            <div className={styles.commandLine}>
+              <span className={styles.prompt}>$</span>
+              <span className={styles.command}>cat soft_skills.md</span>
+            </div>
+            <h2 className={styles.sectionTitle}>
+              <Users className={styles.sectionIcon} />
+              Soft Skills
+            </h2>
+          </div>
+          
+          <div className={styles.markdownBlock}>
+            <div className={styles.markdownContent}>
+              {userData.softSkills.map((skill, index) => (
+                <p key={index} className={styles.markdownLine}>
+                  - **{skill}**
+                </p>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Languages Section */}
+      {userData.languages?.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className={styles.section}
+        >
+          <div className={styles.sectionHeader}>
+            <div className={styles.commandLine}>
+              <span className={styles.prompt}>$</span>
+              <span className={styles.command}>cat languages.yaml</span>
+            </div>
+            <h2 className={styles.sectionTitle}>
+              <Languages className={styles.sectionIcon} />
+              Languages
+            </h2>
+          </div>
+          
+          <div className={styles.yamlBlock}>
+            <pre className={styles.yamlContent}>
+{`languages:
+${userData.languages.map(lang => `  - name: "${lang.name}"
+    proficiency: "${lang.proficiency}"`).join('\n')}`}
+            </pre>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Custom Sections */}
+      {userData.customSections?.map((section, index) => (
+        <motion.section
+          key={section.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 + index * 0.1 }}
+          className={styles.section}
+        >
+          <div className={styles.sectionHeader}>
+            <div className={styles.commandLine}>
+              <span className={styles.prompt}>$</span>
+              <span className={styles.command}>cat {section.title.toLowerCase().replace(/\s+/g, '_')}.md</span>
+            </div>
+            <h2 className={styles.sectionTitle}>
+              <FileText className={styles.sectionIcon} />
+              {section.title}
+            </h2>
+          </div>
+          
+          <div className={styles.markdownBlock}>
+            <div className={styles.markdownContent}>
+              {section.type === 'list' && section.items ? (
+                section.items.map((item, itemIndex) => (
+                  <p key={itemIndex} className={styles.markdownLine}>
+                    - {item}
+                  </p>
+                ))
+              ) : (
+                <div className={styles.markdownText}>
+                  {section.content.split('\n').map((line, lineIndex) => (
+                    <p key={lineIndex} className={styles.markdownLine}>
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.section>
+      ))}
     </div>
   )
 }

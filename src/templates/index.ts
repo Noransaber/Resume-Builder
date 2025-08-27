@@ -41,7 +41,20 @@ export interface TemplateData {
     current: boolean
     gpa: string
   }>
-  skills: string[]
+  softSkills: string[]
+  technicalSkills: string[]
+  languages: Array<{
+    id: string
+    name: string
+    proficiency: 'Beginner' | 'Intermediate' | 'Advanced' | 'Fluent' | 'Native'
+  }>
+  customSections: Array<{
+    id: string
+    title: string
+    content: string
+    type: 'text' | 'list'
+    items?: string[]
+  }>
   projects: Array<{
     id: string
     name: string
@@ -50,7 +63,6 @@ export interface TemplateData {
     link: string
   }>
   certifications: string[]
-  languages: string[]
 }
 
 export interface TemplateProps {

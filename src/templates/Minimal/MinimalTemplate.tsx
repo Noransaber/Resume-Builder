@@ -138,16 +138,62 @@ const MinimalTemplate: React.FC<TemplateProps> = ({ userData }) => {
         </section>
       )}
 
-      {/* Skills Section */}
-      {userData.skills.length > 0 && (
+      {/* Technical Skills Section */}
+      {userData.technicalSkills?.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Skills</h2>
+          <h2 className={styles.sectionTitle}>Technical Skills</h2>
           
           <div className={styles.skillsList}>
-            {userData.skills.join(' • ')}
+            {userData.technicalSkills.join(' • ')}
           </div>
         </section>
       )}
+
+      {/* Soft Skills Section */}
+      {userData.softSkills?.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Soft Skills</h2>
+          
+          <div className={styles.softSkillsList}>
+            {userData.softSkills.join(' • ')}
+          </div>
+        </section>
+      )}
+
+      {/* Languages Section */}
+      {userData.languages?.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Languages</h2>
+          
+          <div className={styles.languagesList}>
+            {userData.languages.map((language, index) => (
+              <span key={language.id}>
+                {language.name} ({language.proficiency})
+                {index < userData.languages.length - 1 ? ' • ' : ''}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Custom Sections */}
+      {userData.customSections?.map((section) => (
+        <section key={section.id} className={styles.section}>
+          <h2 className={styles.sectionTitle}>{section.title}</h2>
+          
+          {section.type === 'list' && section.items ? (
+            <ul className={styles.customList}>
+              {section.items.map((item, itemIndex) => (
+                <li key={itemIndex}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.customText}>
+              {section.content}
+            </div>
+          )}
+        </section>
+      ))}
 
       {/* Projects Section */}
       {userData.projects.some(project => project.name || project.description) && (
