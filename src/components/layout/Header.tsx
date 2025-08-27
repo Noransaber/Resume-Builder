@@ -123,7 +123,7 @@ export function Header() {
               whileTap={{ scale: 0.95 }}
             >
               <Link 
-                href="/dashboard" 
+                href="/signin" 
                 className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-pink-600 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
               >
                 Sign In
@@ -214,7 +214,7 @@ export function Header() {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Link 
-                      href="/dashboard" 
+                      href="/signin" 
                       className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-pink-600 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200"
                       onClick={() => setIsOpen(false)}
                     >
