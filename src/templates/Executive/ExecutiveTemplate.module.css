@@ -1,0 +1,393 @@
+/* Executive Suite Template Styles */
+/* Premium template designed for C-level executives and senior leadership */
+
+.container {
+  @apply bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 rounded-xl shadow-2xl p-10 max-w-6xl mx-auto;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  line-height: 1.7;
+  position: relative;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #c10b41, #dc2626, #ea580c, #d97706, #ca8a04);
+  border-radius: 12px 12px 0 0;
+}
+
+.header {
+  @apply border-b-4 border-primary pb-10 mb-12;
+  position: relative;
+}
+
+.headerContent {
+  @apply grid lg:grid-cols-3 gap-8 items-start;
+}
+
+.nameSection {
+  @apply lg:col-span-2;
+}
+
+.nameWrapper {
+  @apply flex items-center gap-4 mb-8;
+}
+
+.crownIcon {
+  @apply w-10 h-10 text-yellow-500;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.name {
+  @apply text-5xl font-bold text-gray-900 dark:text-white;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.executiveSummary {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200/50 dark:border-gray-700/50;
+}
+
+.summaryTitle {
+  @apply text-2xl font-semibold text-primary mb-4;
+  font-family: 'Inter', sans-serif;
+}
+
+.summary {
+  @apply text-lg text-gray-700 dark:text-gray-300 leading-relaxed;
+  text-align: justify;
+}
+
+.contactCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200/50 dark:border-gray-700/50 h-fit;
+}
+
+.contactTitle {
+  @apply text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center;
+  font-family: 'Inter', sans-serif;
+}
+
+.contactList {
+  @apply space-y-4;
+}
+
+.contactItem {
+  @apply flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg;
+}
+
+.contactIcon {
+  @apply w-5 h-5 text-primary flex-shrink-0;
+}
+
+.contactLink {
+  @apply text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-200 font-medium;
+  text-decoration: none;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+.section {
+  @apply mb-16;
+}
+
+.sectionHeader {
+  @apply flex items-center gap-6 mb-10;
+}
+
+.sectionIconWrapper {
+  @apply p-4 bg-gradient-to-r from-primary to-red-600 text-white rounded-2xl shadow-lg;
+}
+
+.sectionIcon {
+  @apply w-8 h-8;
+}
+
+.sectionTitle {
+  @apply text-3xl font-bold text-gray-900 dark:text-white;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Executive Experience Timeline */
+.experienceTimeline {
+  @apply space-y-8;
+}
+
+.experienceCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200/50 dark:border-gray-700/50;
+  position: relative;
+}
+
+.experienceCard::before {
+  content: '';
+  @apply absolute left-0 top-8 bottom-8 w-1 bg-gradient-to-b from-primary to-red-600 rounded-full;
+}
+
+.cardHeader {
+  @apply flex flex-col xl:flex-row xl:items-start xl:justify-between mb-6 gap-4;
+}
+
+.positionInfo {
+  @apply flex-1;
+}
+
+.positionTitle {
+  @apply text-2xl font-bold text-gray-900 dark:text-white mb-3;
+  font-family: 'Inter', sans-serif;
+}
+
+.companyInfo {
+  @apply flex items-center gap-3;
+}
+
+.companyIcon {
+  @apply w-5 h-5 text-primary;
+}
+
+.companyName {
+  @apply text-xl font-semibold text-primary;
+}
+
+.tenureInfo {
+  @apply text-right space-y-2;
+}
+
+.dateRange,
+.location {
+  @apply flex items-center gap-2 justify-end text-gray-600 dark:text-gray-400;
+}
+
+.dateIcon,
+.locationIcon {
+  @apply w-4 h-4;
+}
+
+.achievementsList {
+  @apply ml-6;
+}
+
+.achievementsTitle {
+  @apply text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4;
+  font-family: 'Inter', sans-serif;
+}
+
+.achievementContent {
+  @apply space-y-3;
+}
+
+.achievementItem {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.achievementItem::before {
+  content: '▸';
+  @apply absolute left-0 top-0 text-primary font-bold;
+}
+
+/* Core Competencies Grid */
+.competenciesGrid {
+  @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4;
+}
+
+.competencyCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-xl shadow-md border border-gray-200/50 dark:border-gray-700/50 text-center;
+  transition: all 0.3s ease;
+}
+
+.competencyCard:hover {
+  @apply bg-white dark:bg-gray-800 shadow-lg;
+  transform: translateY(-2px);
+}
+
+.competencyIcon {
+  @apply w-6 h-6 text-primary mx-auto mb-2;
+}
+
+.competencyText {
+  @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Strategic Projects Grid */
+.projectsGrid {
+  @apply grid gap-8 lg:grid-cols-2;
+}
+
+.projectCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50;
+  transition: all 0.3s ease;
+}
+
+.projectHeader {
+  @apply flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6 gap-4;
+}
+
+.projectTitleSection {
+  @apply flex-1;
+}
+
+.projectTitle {
+  @apply text-xl font-bold text-gray-900 dark:text-white mb-3;
+  font-family: 'Inter', sans-serif;
+}
+
+.projectScope {
+  @apply flex items-center gap-2;
+}
+
+.scopeLabel {
+  @apply text-sm font-medium text-gray-600 dark:text-gray-400;
+}
+
+.scopeText {
+  @apply text-sm text-primary font-semibold;
+}
+
+.projectLink {
+  @apply flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-red-600 text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.linkIcon {
+  @apply w-4 h-4;
+}
+
+.projectDescription {
+  @apply border-t border-gray-200 dark:border-gray-700 pt-6;
+}
+
+.impactTitle {
+  @apply text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3;
+  font-family: 'Inter', sans-serif;
+}
+
+.impactText {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+/* Education Grid */
+.educationGrid {
+  @apply grid gap-6 lg:grid-cols-2;
+}
+
+.educationCard {
+  @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50;
+  transition: all 0.3s ease;
+}
+
+.educationCard:hover {
+  @apply bg-white dark:bg-gray-800 shadow-xl;
+  transform: translateY(-2px);
+}
+
+.educationContent {
+  @apply flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4;
+}
+
+.degreeInfo {
+  @apply flex-1;
+}
+
+.degreeTitle {
+  @apply text-lg font-bold text-gray-900 dark:text-white mb-2;
+  font-family: 'Inter', sans-serif;
+}
+
+.institutionName {
+  @apply text-base font-semibold text-primary;
+}
+
+.educationMeta {
+  @apply space-y-2 lg:text-right;
+}
+
+.graduationDate,
+.institutionLocation,
+.academicHonors {
+  @apply flex items-center gap-2 lg:justify-end text-sm text-gray-600 dark:text-gray-400;
+}
+
+.dateIcon,
+.locationIcon,
+.honorIcon {
+  @apply w-4 h-4;
+}
+
+/* Print styles */
+@media print {
+  .container {
+    background: white !important;
+    box-shadow: none !important;
+    padding: 2rem !important;
+    max-width: none !important;
+  }
+  
+  .container::before {
+    background: #c10b41 !important;
+  }
+  
+  .name {
+    color: #1f2937 !important;
+    text-shadow: none !important;
+  }
+  
+  .summaryTitle {
+    color: #c10b41 !important;
+  }
+  
+  .summary {
+    color: #374151 !important;
+  }
+  
+  .executiveSummary,
+  .contactCard,
+  .experienceCard,
+  .competencyCard,
+  .projectCard,
+  .educationCard {
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+  }
+  
+  .sectionIconWrapper {
+    background: #c10b41 !important;
+  }
+  
+  .sectionTitle {
+    color: #1f2937 !important;
+  }
+  
+  .positionTitle {
+    color: #1f2937 !important;
+  }
+  
+  .companyName {
+    color: #c10b41 !important;
+  }
+  
+  .institutionName {
+    color: #c10b41 !important;
+  }
+  
+  .projectLink {
+    background: #c10b41 !important;
+  }
+  
+  .achievementItem::before {
+    color: #c10b41 !important;
+  }
+  
+  .competencyIcon,
+  .contactIcon,
+  .companyIcon {
+    color: #6b7280 !important;
+  }
+}

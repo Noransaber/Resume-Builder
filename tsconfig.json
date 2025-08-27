@@ -42,6 +42,12 @@
       ],
       "@/i18n/*": [
         "src/i18n/*"
+      ],
+      "@/templates": [
+        "src/templates"
+      ],
+      "@/templates/*": [
+        "src/templates/*"
       ]
     },
     "plugins": [

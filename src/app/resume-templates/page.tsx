@@ -4,173 +4,23 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight, Star, Download, Eye, ChevronRight } from 'lucide-react'
+import { templates, categories } from '../../templates'
 
-// Enhanced template data matching resume.io structure
-const resumeTemplates = [
-  // Professional Templates
-  {
-    id: 1,
-    name: 'Modern Professional',
-    category: 'Professional',
-    previewImage: '/templates/modern-professional-thumb.png',
-    rating: 4.9,
-    downloads: '2.4k',
-    description: 'Clean and modern design perfect for corporate roles',
-    popular: true,
-    style: 'modern-professional',
-    featured: true
-  },
-  {
-    id: 2,
-    name: 'Executive Suite',
-    category: 'Professional',
-    previewImage: '/templates/executive-suite-thumb.png',
-    rating: 4.9,
-    downloads: '3.1k',
-    description: 'Premium template for senior-level positions',
-    popular: true,
-    style: 'executive-suite',
-    featured: true
-  },
-  {
-    id: 3,
-    name: 'Classic Elegant',
-    category: 'Professional',
-    previewImage: '/templates/classic-elegant-thumb.png',
-    rating: 4.6,
-    downloads: '1.2k',
-    description: 'Timeless design that never goes out of style',
-    popular: false,
-    style: 'classic-elegant',
-    featured: false
-  },
-  {
-    id: 4,
-    name: 'Corporate Clean',
-    category: 'Professional',
-    previewImage: '/templates/corporate-clean-thumb.png',
-    rating: 4.7,
-    downloads: '1.8k',
-    description: 'Professional and clean for any industry',
-    popular: false,
-    style: 'corporate-clean',
-    featured: false
-  },
-
-  // Creative Templates
-  {
-    id: 5,
-    name: 'Creative Portfolio',
-    category: 'Creative',
-    previewImage: '/templates/creative-portfolio-thumb.png',
-    rating: 4.8,
-    downloads: '1.8k',
-    description: 'Stand out with this creative and unique template',
-    popular: false,
-    style: 'creative-portfolio',
-    featured: true
-  },
-  {
-    id: 6,
-    name: 'Artistic Designer',
-    category: 'Creative',
-    previewImage: '/templates/artistic-designer-thumb.png',
-    rating: 4.7,
-    downloads: '1.5k',
-    description: 'Perfect for designers and creative professionals',
-    popular: false,
-    style: 'artistic-designer',
-    featured: false
-  },
-
-  // Modern Templates
-  {
-    id: 7,
-    name: 'Minimalist Clean',
-    category: 'Modern',
-    previewImage: '/templates/minimalist-clean-thumb.png',
-    rating: 4.7,
-    downloads: '1.5k',
-    description: 'Simple and elegant for any industry',
-    popular: false,
-    style: 'minimalist-clean',
-    featured: false
-  },
-  {
-    id: 8,
-    name: 'Contemporary',
-    category: 'Modern',
-    previewImage: '/templates/contemporary-thumb.png',
-    rating: 4.6,
-    downloads: '1.3k',
-    description: 'Modern and contemporary design',
-    popular: false,
-    style: 'contemporary',
-    featured: false
-  },
-
-  // Technology Templates
-  {
-    id: 9,
-    name: 'Tech Innovator',
-    category: 'Technology',
-    previewImage: '/templates/tech-innovator-thumb.png',
-    rating: 4.8,
-    downloads: '2.7k',
-    description: 'Perfect for tech professionals and developers',
-    popular: false,
-    style: 'tech-innovator',
-    featured: true
-  },
-  {
-    id: 10,
-    name: 'Digital Professional',
-    category: 'Technology',
-    previewImage: '/templates/digital-professional-thumb.png',
-    rating: 4.5,
-    downloads: '1.1k',
-    description: 'Digital-first design for tech roles',
-    popular: false,
-    style: 'digital-professional',
-    featured: false
-  },
-
-  // Executive Templates
-  {
-    id: 11,
-    name: 'Leadership Pro',
-    category: 'Executive',
-    previewImage: '/templates/leadership-pro-thumb.png',
-    rating: 4.9,
-    downloads: '2.1k',
-    description: 'Executive-level template for leaders',
-    popular: true,
-    style: 'leadership-pro',
-    featured: false
-  },
-  {
-    id: 12,
-    name: 'C-Suite',
-    category: 'Executive',
-    previewImage: '/templates/c-suite-thumb.png',
-    rating: 4.8,
-    downloads: '1.9k',
-    description: 'Premium template for C-level executives',
-    popular: false,
-    style: 'c-suite',
-    featured: false
-  }
-]
-
-// Category definitions
-const categories = [
-  { id: 'all', name: 'All Templates', count: resumeTemplates.length },
-  { id: 'professional', name: 'Professional', count: resumeTemplates.filter(t => t.category === 'Professional').length },
-  { id: 'creative', name: 'Creative', count: resumeTemplates.filter(t => t.category === 'Creative').length },
-  { id: 'modern', name: 'Modern', count: resumeTemplates.filter(t => t.category === 'Modern').length },
-  { id: 'technology', name: 'Technology', count: resumeTemplates.filter(t => t.category === 'Technology').length },
-  { id: 'executive', name: 'Executive', count: resumeTemplates.filter(t => t.category === 'Executive').length }
-]
+// Convert template data to match the expected format
+const resumeTemplates = templates.map(template => ({
+  id: template.id,
+  name: template.name,
+  category: template.category,
+  previewImage: template.thumbnail,
+  rating: 4.8, // Default rating
+  downloads: template.popular ? '2.5k' : '1.2k', // Mock download counts
+  description: template.description,
+  popular: template.popular,
+  style: template.id,
+  featured: template.featured,
+  atsOptimized: template.atsOptimized,
+  features: template.features
+}))
 
 // Helper functions for template preview styles
 const getTemplatePreviewStyles = (style: string) => {
@@ -255,7 +105,7 @@ export default function ResumeTemplatesPage() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link
-                  href="/resume/builder/1"
+                  href="/resume/builder/modern"
                   className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   Create my resume
@@ -382,7 +232,7 @@ export default function ResumeTemplatesPage() {
                       className="group-hover:scale-100 group-hover:opacity-100 transition-all duration-300"
                     >
                       <Link
-                        href={`/resume/builder/${template.id}` as any}
+                        href={`/resume/builder/${template.id}`}
                         className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
                       >
                         Use this template
@@ -467,7 +317,7 @@ export default function ResumeTemplatesPage() {
               whileTap={{ scale: 0.95 }}
             >
               <Link
-                href="/resume/builder/1"
+                href="/resume/builder/modern"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 Start Building Now

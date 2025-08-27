@@ -7,17 +7,9 @@ import { useAuthStore } from '@/stores/authStore'
 import { db, firebaseReady } from '@/lib/firebase'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { ResumeForm } from '@/components/resume/ResumeForm'
-import { ResumePreview } from '@/components/resume/ResumePreview'
+import { DynamicResumePreview } from '@/components/resume/DynamicResumePreview'
 
-// Template data with style information
-const templates = {
-  1: { name: 'Modern Professional', category: 'Professional', style: 'modern-professional' },
-  2: { name: 'Executive Suite', category: 'Professional', style: 'executive-suite' },
-  3: { name: 'Creative Portfolio', category: 'Creative', style: 'creative-portfolio' },
-  4: { name: 'Minimalist Clean', category: 'Minimal', style: 'minimalist-clean' },
-  5: { name: 'Tech Innovator', category: 'Technology', style: 'tech-innovator' },
-  6: { name: 'Classic Elegant', category: 'Professional', style: 'classic-elegant' }
-}
+import { getTemplateById } from '../../../../templates'
 
 // Default resume data structure
 const defaultResumeData = {
@@ -80,7 +72,7 @@ export default function ResumeBuilderPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
 
-  const template = templates[templateId as '1' | '2' | '3' | '4' | '5' | '6'] || null
+  const template = getTemplateById(templateId)
 
   // Load existing resume data if user is logged in
   useEffect(() => {
@@ -147,7 +139,7 @@ export default function ResumeBuilderPage() {
       }
 
       // Try modern browser print to PDF first
-      if (typeof window !== 'undefined' && window.print) {
+      if (typeof window !== 'undefined' && 'print' in window) {
         // Get all stylesheets from the current document
         let styles = ''
         
@@ -319,7 +311,7 @@ export default function ResumeBuilderPage() {
           heightLeft -= pageHeight
         }
 
-        const fileName = `${resumeData.personal.firstName || 'Resume'}_${resumeData.personal.lastName || 'Template'}_${template.name.replace(/\s+/g, '_')}.pdf`
+        const fileName = `${resumeData.personal.firstName || 'Resume'}_${resumeData.personal.lastName || 'Template'}_${template?.name?.replace(/\s+/g, '_') || 'CV'}.pdf`
         pdf.save(fileName)
 
       } catch (pdfError) {
@@ -435,7 +427,7 @@ export default function ResumeBuilderPage() {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Live Preview</h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">See how your resume looks as you type</p>
             </div>
-            <ResumePreview
+            <DynamicResumePreview
               data={resumeData}
               template={template}
             />

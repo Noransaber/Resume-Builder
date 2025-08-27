@@ -1,0 +1,382 @@
+/* Creative Portfolio Template Styles */
+/* Bold, creative design with visual elements and modern styling */
+
+.container {
+  @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 rounded-2xl shadow-2xl p-8 max-w-5xl mx-auto;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+}
+
+/* Background decorative elements */
+.backgroundElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.circle1 {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(193, 11, 65, 0.1), rgba(236, 72, 153, 0.1));
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+.circle2 {
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+  border-radius: 50%;
+  filter: blur(15px);
+}
+
+.triangle {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 50px solid rgba(193, 11, 65, 0.05);
+  transform: rotate(45deg);
+}
+
+/* All content above background elements */
+.container > * {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  @apply mb-12;
+}
+
+.nameSection {
+  @apply text-center mb-8;
+}
+
+.name {
+  @apply text-5xl font-bold mb-4;
+  background: linear-gradient(135deg, #c10b41, #ec4899, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lastName {
+  @apply block mt-2;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.summaryCard {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50 dark:border-gray-700/50 max-w-2xl mx-auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.summaryIcon {
+  @apply p-3 bg-gradient-to-r from-primary to-pink-500 text-white rounded-xl flex-shrink-0;
+}
+
+.summary {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed text-lg;
+  margin: 0;
+}
+
+.contactSection {
+  @apply mt-8;
+}
+
+.contactGrid {
+  @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4;
+}
+
+.contactCard {
+  @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-4 rounded-xl shadow-md border border-white/50 dark:border-gray-700/50 text-center;
+  transition: all 0.3s ease;
+}
+
+.contactCard:hover {
+  @apply bg-white/90 dark:bg-gray-800/90 shadow-lg;
+  transform: translateY(-2px);
+}
+
+.contactIcon {
+  @apply w-5 h-5 text-primary mx-auto mb-2;
+}
+
+.contactLink {
+  @apply text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-200;
+  text-decoration: none;
+  display: block;
+}
+
+.section {
+  @apply mb-12;
+}
+
+.sectionHeader {
+  @apply flex items-center gap-4 mb-8;
+}
+
+.sectionIconWrapper {
+  @apply p-3 bg-gradient-to-r from-primary to-pink-500 text-white rounded-xl shadow-lg;
+}
+
+.sectionIcon {
+  @apply w-6 h-6;
+}
+
+.sectionTitle {
+  @apply text-3xl font-bold text-gray-900 dark:text-white;
+  background: linear-gradient(135deg, #1f2937, #4b5563);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Timeline for Experience */
+.timeline {
+  @apply space-y-8 relative;
+}
+
+.timeline::before {
+  content: '';
+  @apply absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary to-pink-500;
+}
+
+.timelineItem {
+  @apply relative pl-16;
+}
+
+.timelineDot {
+  @apply absolute left-4 top-6 w-4 h-4 bg-gradient-to-r from-primary to-pink-500 rounded-full shadow-lg transform -translate-x-1/2;
+}
+
+.timelineContent {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50;
+}
+
+.itemHeader {
+  @apply flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 gap-2;
+}
+
+.itemTitleGroup {
+  @apply flex-1;
+}
+
+.itemTitle {
+  @apply text-xl font-bold text-gray-900 dark:text-white mb-2;
+}
+
+.itemSubtitle {
+  @apply text-lg font-semibold;
+  background: linear-gradient(135deg, #c10b41, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.itemMeta {
+  @apply text-sm text-gray-600 dark:text-gray-400 flex flex-col gap-1;
+}
+
+.itemDate,
+.itemLocation {
+  @apply flex items-center gap-2;
+}
+
+.metaIcon {
+  @apply w-3 h-3;
+}
+
+.itemDescription {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.descriptionParagraph {
+  @apply mb-3 last:mb-0;
+}
+
+/* Skills Grid */
+.skillsGrid {
+  @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4;
+}
+
+.skillCard {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-white/50 dark:border-gray-700/50 text-center;
+  transition: all 0.3s ease;
+}
+
+.skillCard:hover {
+  @apply bg-white/90 dark:bg-gray-800/90 shadow-xl;
+}
+
+.skillIcon {
+  @apply mx-auto mb-2 p-2 bg-gradient-to-r from-primary to-pink-500 text-white rounded-lg;
+}
+
+.skillText {
+  @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+/* Projects Grid */
+.projectsGrid {
+  @apply grid gap-6 sm:grid-cols-2;
+}
+
+.projectCard {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50;
+  transition: all 0.3s ease;
+}
+
+.projectHeader {
+  @apply flex items-start justify-between mb-4;
+}
+
+.projectTitle {
+  @apply text-xl font-bold text-gray-900 dark:text-white flex-1;
+}
+
+.projectLink {
+  @apply p-2 bg-gradient-to-r from-primary to-pink-500 text-white rounded-lg hover:shadow-lg transition-all duration-200;
+}
+
+.projectLinkIcon {
+  @apply w-4 h-4;
+}
+
+.projectTech {
+  @apply flex flex-wrap gap-2 mb-4;
+}
+
+.techTag {
+  @apply px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium;
+}
+
+.projectDescription {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+/* Education Grid */
+.educationGrid {
+  @apply grid gap-6 sm:grid-cols-2;
+}
+
+.educationCard {
+  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50;
+  transition: all 0.3s ease;
+}
+
+.educationCard:hover {
+  @apply bg-white/90 dark:bg-gray-800/90 shadow-xl;
+  transform: translateY(-2px);
+}
+
+.educationContent {
+  @apply text-center;
+}
+
+.educationDegree {
+  @apply text-lg font-bold text-gray-900 dark:text-white mb-2;
+}
+
+.educationSchool {
+  @apply text-base font-semibold mb-3;
+  background: linear-gradient(135deg, #c10b41, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.educationMeta {
+  @apply text-sm text-gray-600 dark:text-gray-400 space-y-1;
+}
+
+.educationDate,
+.educationLocation {
+  @apply block;
+}
+
+.educationGpa {
+  @apply text-sm text-gray-700 dark:text-gray-300 mt-2 font-medium;
+}
+
+/* Print styles */
+@media print {
+  .container {
+    background: white !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+    max-width: none !important;
+  }
+  
+  .backgroundElements {
+    display: none !important;
+  }
+  
+  .name {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+  }
+  
+  .lastName {
+    color: #4b5563 !important;
+    -webkit-text-fill-color: #4b5563 !important;
+  }
+  
+  .summaryCard,
+  .contactCard,
+  .timelineContent,
+  .skillCard,
+  .projectCard,
+  .educationCard {
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+  }
+  
+  .itemSubtitle {
+    color: #c10b41 !important;
+    -webkit-text-fill-color: #c10b41 !important;
+  }
+  
+  .educationSchool {
+    color: #c10b41 !important;
+    -webkit-text-fill-color: #c10b41 !important;
+  }
+  
+  .sectionIconWrapper {
+    background: #c10b41 !important;
+  }
+  
+  .skillIcon {
+    background: #c10b41 !important;
+  }
+  
+  .projectLink {
+    background: #c10b41 !important;
+  }
+  
+  .techTag {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+  }
+}
