@@ -74,3 +74,59 @@ export function FullScreenLoader() {
     </div>
   )
 }
+
+/**
+ * Dashboard-specific Full Screen Loader
+ */
+export function DashboardFullScreenLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
+      <div className="text-center">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="relative mb-8"
+        >
+          <motion.div
+            className="w-20 h-20 bg-gradient-to-r from-primary to-pink-600 rounded-full flex items-center justify-center shadow-xl mx-auto"
+            animate={{
+              rotate: 360,
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            <span className="text-white font-bold text-2xl">R</span>
+          </motion.div>
+          <motion.div
+            className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full"
+            animate={{
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            Loading your workspace...
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            Preparing your career dashboard
+          </p>
+          <LoadingSpinner size="sm" />
+        </motion.div>
+      </div>
+    </div>
+  )
+}
