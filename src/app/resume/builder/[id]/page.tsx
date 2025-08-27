@@ -8,6 +8,8 @@ import { db, firebaseReady } from '@/lib/firebase'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { ResumeForm } from '@/components/resume/ResumeForm'
 import { DynamicResumePreview } from '@/components/resume/DynamicResumePreview'
+import { PageWrapper, LoadingButton } from '@/components/ui/PageLoader'
+import { ResumeLoader } from '@/components/ui/ModernLoaders'
 
 import { getTemplateById } from '../../../../templates'
 import { PDFGenerator } from '../../../../lib/pdfGenerator'
@@ -73,6 +75,7 @@ export default function ResumeBuilderPage() {
   const [resumeData, setResumeData] = useState(defaultResumeData)
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
 
   const template = getTemplateById(templateId)
@@ -139,6 +142,7 @@ export default function ResumeBuilderPage() {
     }
 
     try {
+      setIsDownloading(true)
       // Use the improved PDF generator
       await PDFGenerator.generatePDF(resumeData, template, {
         filename: `${resumeData.personal.firstName || 'Resume'}_${resumeData.personal.lastName || 'CV'}_${template.name.replace(/\s+/g, '_')}.pdf`,
@@ -156,6 +160,8 @@ export default function ResumeBuilderPage() {
         console.error('Print PDF generation also failed:', printError)
         alert('PDF generation failed. Please use your browser\'s print function (Ctrl+P) to save as PDF.')
       }
+    } finally {
+      setIsDownloading(false)
     }
   }
 
@@ -182,7 +188,12 @@ export default function ResumeBuilderPage() {
   }
 
   return (
-    <div className="min-h-screen pt-32  bg-gray-50 dark:bg-gray-900  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <PageWrapper 
+      isLoading={isLoading} 
+      loadingType="resume" 
+      loadingMessage="Loading your resume builder..."
+    >
+      <div className="min-h-screen pt-32  bg-gray-50 dark:bg-gray-900  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -213,28 +224,27 @@ export default function ResumeBuilderPage() {
                 </span>
               )}
               
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <LoadingButton
+                isLoading={isSaving}
                 onClick={handleSave}
-                disabled={isSaving}
-                className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 text-sm"
+                loadingText="Saving..."
+                className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors text-sm"
               >
                 <Save className="w-4 h-4" />
-                <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'Save'}</span>
+                <span className="hidden sm:inline">Save</span>
                 <span className="sm:hidden">Save</span>
-              </motion.button>
+              </LoadingButton>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <LoadingButton
+                isLoading={isDownloading}
                 onClick={handleDownload}
+                loadingText="Generating..."
                 className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-gradient-to-r from-primary to-pink-600 text-white font-medium rounded-lg hover:shadow-lg transition-all text-sm"
               >
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">Download PDF</span>
                 <span className="sm:hidden">PDF</span>
-              </motion.button>
+              </LoadingButton>
             </div>
           </div>
         </div>
@@ -268,6 +278,7 @@ export default function ResumeBuilderPage() {
         </div>
       </div>
     </div>
+    </PageWrapper>
   )
 }
 

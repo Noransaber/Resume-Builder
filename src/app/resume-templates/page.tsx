@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight, Star, Download, Eye, ChevronRight } from 'lucide-react'
 import { templates, categories } from '../../templates'
+import { PageWrapper } from '@/components/ui/PageLoader'
 
 // Convert template data to match the expected format
 const resumeTemplates = templates.map(template => ({
@@ -75,7 +76,8 @@ export default function ResumeTemplatesPage() {
   }, [activeCategory])
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <PageWrapper isLoading={false} loadingType="general">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header Section - Matching resume.io style */}
       <section className="pt-32 pb-16 lg:pt-36 lg:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -328,6 +330,7 @@ export default function ResumeTemplatesPage() {
         </div>
       </section>
     </div>
+    </PageWrapper>
   )
 }
 

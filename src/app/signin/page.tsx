@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { FullScreenLoader, LoadingSpinner } from '@/components/ui/LoadingSpinner'
+import { LoadingButton } from '@/components/ui/PageLoader'
 
 /**
  * Modern Sign-In Page Component
@@ -260,26 +261,16 @@ export default function SignInPage() {
             {/* Sign In Buttons */}
             <div className="space-y-4">
               {/* Google Sign In */}
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
+              <LoadingButton
+                isLoading={authLoading}
                 onClick={handleGoogleSignIn}
-                disabled={authLoading}
-                className="w-full flex items-center justify-center space-x-3 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-primary dark:hover:border-primary text-gray-700 dark:text-gray-200 font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed group"
+                loadingText="Signing in..."
+                className="w-full flex items-center justify-center space-x-3 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-primary dark:hover:border-primary text-gray-700 dark:text-gray-200 font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl group"
               >
-                {authLoading ? (
-                  <LoadingSpinner size="sm" />
-                ) : (
-                  <>
-                    <Mail className="w-5 h-5 text-red-500" />
-                    <span>Continue with Google</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </motion.button>
+                <Mail className="w-5 h-5 text-red-500" />
+                <span>Continue with Google</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </LoadingButton>
 
               {/* GitHub Sign In */}
               {/* <motion.button

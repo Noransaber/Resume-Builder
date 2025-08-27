@@ -12,6 +12,8 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { JobCard } from '@/components/jobs/JobCard'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { PageWrapper } from '@/components/ui/PageLoader'
+import { JobSearchLoader } from '@/components/ui/ModernLoaders'
 
 type Filters = {
   search: string
@@ -96,7 +98,8 @@ export default function JobsPage() {
   }, [jobs, filters.search])
 
   return (
-    <Container>
+    <PageWrapper isLoading={false} loadingType="jobs">
+      <Container>
       <div className="grid gap-6">
         <h1 className="text-2xl font-bold tracking-tight">Jobs</h1>
 
@@ -132,6 +135,7 @@ export default function JobsPage() {
         {!hasMore && !loading && <p className="text-center text-sm opacity-70">End of results</p>}
       </div>
     </Container>
+    </PageWrapper>
   )
 }
 

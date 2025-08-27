@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'react-hot-toast'
 import '@/i18n/config'
 import { useTranslation } from 'react-i18next'
+import { LoadingProvider } from '@/components/providers/LoadingProvider'
 
 export function Providers({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation()
@@ -17,8 +18,10 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      {children}
-      <Toaster position="top-right" />
+      <LoadingProvider>
+        {children}
+        <Toaster position="top-right" />
+      </LoadingProvider>
     </ThemeProvider>
   )
 }
