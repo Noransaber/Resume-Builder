@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { auth, googleProvider, githubProvider } from '@/lib/firebase'
-import { onAuthStateChanged, signInWithPopup, signOut, User } from 'firebase/auth'
+import { onAuthStateChanged, signInWithPopup, signOut, User, signInWithEmailAndPassword } from 'firebase/auth'
 
 type AuthState = {
   user: User | null
@@ -9,6 +9,7 @@ type AuthState = {
   loginGoogle: () => Promise<void>
   loginGithub: () => Promise<void>
   logout: () => Promise<void>
+  loginEmail: (email: string, password: string) => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -19,6 +20,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   loginGoogle: async () => { await signInWithPopup(auth, googleProvider) },
   loginGithub: async () => { await signInWithPopup(auth, githubProvider) },
+  loginEmail: async (email, password) => {
+    await signInWithEmailAndPassword(auth, email, password)
+  },
   logout: async () => { await signOut(auth) }
 }))
 

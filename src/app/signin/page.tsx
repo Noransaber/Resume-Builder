@@ -13,11 +13,29 @@ import {
   Sparkles, 
   Users,
   CheckCircle,
-  Loader2
+  Loader2,
+  Eye,
+  EyeOff
 } from 'lucide-react'
 import Link from 'next/link'
 import { FullScreenLoader, LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { LoadingButton } from '@/components/ui/PageLoader'
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form'
+
+// Initialize Firebase Auth
+import { getAuth } from 'firebase/auth'
+
+// Use getAuth to initialize auth
+const auth = getAuth()
+
+// Ensure signInWithEmailAndPassword is used correctly
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
+// Use signInWithEmailAndPassword in loginEmail
+const loginEmail = async (email: string, password: string) => {
+  const auth = getAuth()
+  await signInWithEmailAndPassword(auth, email, password)
+}
 
 /**
  * Modern Sign-In Page Component
@@ -35,6 +53,9 @@ export default function SignInPage() {
   const { user, loading, init, loginGoogle, loginGithub } = useAuthStore()
   const [authLoading, setAuthLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  const [showPassword, setShowPassword] = useState(false)
 
   // Initialize auth state and redirect if already signed in
   useEffect(() => {
@@ -74,6 +95,28 @@ export default function SignInPage() {
       // Redirect will happen automatically via useEffect
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with GitHub')
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  // Define signInWithEmail in your auth store if not already defined
+  // Example implementation
+  const signInWithEmail = async (email: string, password: string) => {
+    // Use Firebase's signInWithEmailAndPassword
+    const userCredential = await auth.signInWithEmailAndPassword(email, password)
+    return userCredential.user
+  }
+
+  // Type the data parameter
+  const handleEmailSignIn: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      setAuthLoading(true)
+      setError(null)
+      await loginEmail(data.email, data.password)
+      // Redirect will happen automatically via useEffect
+    } catch (err: any) {
+      setError(err.message || 'Failed to sign in with email')
     } finally {
       setAuthLoading(false)
     }
@@ -119,7 +162,7 @@ export default function SignInPage() {
         />
       </div>
 
-      <div className="relative w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="relative w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center pt-32">
         {/* Left Side - Branding & Features */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -267,32 +310,71 @@ export default function SignInPage() {
                 loadingText="Signing in..."
                 className="w-full flex items-center justify-center space-x-3 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-primary dark:hover:border-primary text-gray-700 dark:text-gray-200 font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl group"
               >
-                <Mail className="w-5 h-5 text-red-500" />
-                <span>Continue with Google</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-center space-x-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5">
+                    <path fill="#4285F4" d="M24 9.5c3.9 0 7.1 1.6 9.3 3.3l7-7C35.8 2.5 30.3 0 24 0 14.6 0 6.4 5.8 2.5 14.1l8.3 6.4C12.5 14.1 17.7 9.5 24 9.5z"/>
+                    <path fill="#34A853" d="M46.5 24c0-1.5-.1-3-.4-4.5H24v9h12.7c-.5 2.5-1.9 4.6-3.9 6.1l6.1 4.7c3.6-3.3 5.6-8.1 5.6-13.3z"/>
+                    <path fill="#FBBC05" d="M10.8 28.5c-1-2.5-1.6-5.2-1.6-8s.6-5.5 1.6-8l-8.3-6.4C1.1 10.5 0 17 0 24s1.1 13.5 2.5 19.9l8.3-6.4z"/>
+                    <path fill="#EA4335" d="M24 48c6.5 0 12-2.1 16-5.7l-6.1-4.7c-2.2 1.5-5 2.4-9.9 2.4-6.3 0-11.5-4.6-13.4-10.7l-8.3 6.4C6.4 42.2 14.6 48 24 48z"/>
+                    <path fill="none" d="M0 0h48v48H0z"/>
+                  </svg>
+                  <span>Continue with Google</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
               </LoadingButton>
 
-              {/* GitHub Sign In */}
-              {/* <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
-                onClick={handleGithubSignIn}
-                disabled={authLoading}
-                className="w-full flex items-center justify-center space-x-3 bg-gray-900 dark:bg-gray-600 hover:bg-gray-800 dark:hover:bg-gray-500 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed group"
-              >
-                {authLoading ? (
-                  <LoadingSpinner size="sm" />
-                ) : (
-                  <>
-                    <Github className="w-5 h-5" />
-                    <span>Continue with GitHub</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </motion.button> */}
+              {/* Email Sign In Form */}
+              <form onSubmit={handleSubmit(handleEmailSignIn)} className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    {...register('email', { required: 'Email is required' })}
+                    className="min-h-[56px] mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                  />
+                  {errors.email && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{String(errors.email.message)}</p>}
+                </div>
+
+                {/* <div>
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name</label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    {...register('firstName', { required: 'First name is required' })}
+                    className="min-h-[56px] mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                  />
+                  {errors.firstName && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{String(errors.firstName.message)}</p>}
+                </div> */}
+
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                  <div className="mt-1 relative">
+                    <input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      {...register('password', { required: 'Password is required' })}
+                      className="min-h-[56px] block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5 text-gray-500" /> : <Eye className="w-5 h-5 text-gray-500" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{String(errors.password.message)}</p>}
+                </div>
+
+                <LoadingButton
+                  isLoading={authLoading}
+                  loadingText="Signing in..."
+                  className="w-full flex items-center justify-center space-x-3 bg-primary text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  Sign In
+                </LoadingButton>
+              </form>
             </div>
 
             {/* Divider */}
@@ -324,11 +406,11 @@ export default function SignInPage() {
               </p>
               <p className="mt-2">
                 By continuing, you agree to our{' '}
-                <Link href="/terms" className="text-primary hover:underline">
+                <Link href={{ pathname: '/terms' }} className="text-primary hover:underline">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-primary hover:underline">
+                <Link href={{ pathname: '/privacy' }} className="text-primary hover:underline">
                   Privacy Policy
                 </Link>
               </p>

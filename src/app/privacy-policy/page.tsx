@@ -1,0 +1,31 @@
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import TableOfContents from '@/components/home/TableOfContents';
+
+export default function PrivacyPolicy() {
+  return (
+    <>
+      <Head>
+        <title>Privacy Policy - Your Company</title>
+        <meta name="description" content="Read our privacy policy." />
+      </Head>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Privacy Policy</h1>
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">Effective Date: January 1, 2023</p>
+          <TableOfContents sections={['Introduction & Scope', 'What Data We Collect', 'How We Use Your Data', 'How We Share Your Data', 'Your Rights', 'Data Security Measures', 'Cookies and Tracking Technologies', 'Third-Party Links', 'Children\'s Privacy', 'Changes to This Policy', 'Contact Us']} />
+          <div className="mt-8">
+            {['Introduction & Scope', 'What Data We Collect', 'How We Use Your Data', 'How We Share Your Data', 'Your Rights', 'Data Security Measures', 'Cookies and Tracking Technologies', 'Third-Party Links', 'Children\'s Privacy', 'Changes to This Policy', 'Contact Us'].map((section, index) => (
+              <div key={index} id={section.toLowerCase().replace(/ /g, '-')}>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{section}</h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}

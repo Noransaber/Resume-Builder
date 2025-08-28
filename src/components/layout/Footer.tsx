@@ -58,11 +58,11 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { name: 'Facebook', icon: Facebook, href: 'https://facebook.com' },
-  { name: 'Twitter', icon: Twitter, href: 'https://twitter.com' },
-  { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com' },
+  { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/noran.abdelfattah.2025' },
+  { name: 'Twitter', icon: Twitter, href: 'https://x.com/Noransaber11' },
+  { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/noran-saber-abdelfattah-6198471ba/' },
   { name: 'Instagram', icon: Instagram, href: 'https://instagram.com' },
-  { name: 'GitHub', icon: Github, href: 'https://github.com' },
+  { name: 'GitHub', icon: Github, href: 'https://github.com/Noransaber' },
 ]
 
 export function Footer() {
@@ -129,15 +129,15 @@ export function Footer() {
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-gray-300">
                   <Mail className="w-5 h-5 text-primary" />
-                  <span>support@resumebuilder.com</span>
+                  <span>noransaber685@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <Phone className="w-5 h-5 text-primary" />
-                  <span>+1 (555) 123-4567</span>
+                  <span>+20 10 3070 6893</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <MapPin className="w-5 h-5 text-primary" />
-                  <span>San Francisco, CA</span>
+                  <span>Cairo, Egypt</span>
                 </div>
               </div>
             </motion.div>
