@@ -197,7 +197,7 @@ export function Sidebar({ className = '' }: SidebarProps) {
                     whileTap={{ scale: 0.98 }}
                     className={`group flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                       isActive
-                        ? 'bg-gradient-to-r from-primary to-pink-600 text-white shadow-lg'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                     }`}
                   >

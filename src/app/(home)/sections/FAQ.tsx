@@ -2,6 +2,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { ChevronDown, HelpCircle, Sparkles, Zap, Star, Users, Award } from 'lucide-react'
+import Link from 'next/link'
 
 const faqs = [
   {
@@ -108,7 +109,7 @@ export function FAQ() {
         >
           <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-6">
             Frequently Asked{' '}
-            <span className="bg-gradient-to-r from-primary to-pink-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-br from-purple-400 to-pink-400 bg-clip-text text-transparent">
               Questions
             </span>
           </h2>
@@ -146,7 +147,7 @@ export function FAQ() {
                   >
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0 mt-1">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-primary to-pink-600 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
                           <faq.icon className="w-5 h-5 text-white" />
                         </div>
                       </div>
@@ -154,7 +155,7 @@ export function FAQ() {
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                           {faq.question}
                         </h3>
-                        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-purple-300 text-purple-600">
                           {faq.category}
                         </span>
                       </div>
@@ -201,7 +202,7 @@ export function FAQ() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <div className="bg-gradient-to-r from-primary to-pink-600 rounded-3xl p-8 text-white">
+          <div className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-3xl p-8 text-white">
             <motion.div
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
@@ -220,9 +221,11 @@ export function FAQ() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              Contact Support
+              <Link href="/contact-us">
+                Contact Support
+              </Link>
               <ChevronDown className="w-5 h-5 rotate-[-90deg]" />
             </motion.div>
           </div>
