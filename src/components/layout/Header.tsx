@@ -5,12 +5,17 @@ import { useTranslation } from 'react-i18next'
 import { Sun, Moon, Menu, X, Sparkles, FileText, Users, BarChart3, Heart } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from "@/lib/firebase"
+
 
 export function Header() {
   const { theme, setTheme } = useTheme()
   const { i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  // Firebase auth state
+  const [user, loading] = useAuthState(auth)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -244,38 +249,45 @@ export function Header() {
             </motion.button>
 
             {/* Enhanced Sign In Button */}
-            <motion.div
+  {/* Dynamic Sign In / Dashboard Button */}
+  <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="relative group"
             >
-              <Link
-                href="/signin"
-                className="relative inline-flex items-center px-8 py-3 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 overflow-hidden"
-              >
-                {/* Button background effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={false}
-                />
-
-                {/* Shimmer effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
-
-                <span className="relative z-10">Sign In</span>
-                <motion.div
-                  className="relative z-10 ml-2"
-                  whileHover={{ x: 3 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+              {loading ? (
+                <div className="px-8 py-3 text-sm text-gray-500 dark:text-gray-400">
+                  Loading...
+                </div>
+              ) : (
+                <Link
+                  href={user ? "/dashboard" : "/signin"}
+                  className="relative inline-flex items-center px-8 py-3 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white font-bold text-sm shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 overflow-hidden"
                 >
-                  <Sparkles className="w-4 h-4" />
-                </motion.div>
-              </Link>
+                  {/* Hover background */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    initial={false}
+                  />
+                  {/* Shimmer */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  <span className="relative z-10">
+                    {user ? "Go to Dashboard" : "Sign In"}
+                  </span>
+                  <motion.div
+                    className="relative z-10 ml-2"
+                    whileHover={{ x: 3 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                  </motion.div>
+                </Link>
+              )}
             </motion.div>
           </div>
 

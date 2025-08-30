@@ -213,22 +213,22 @@ export function DashboardStats() {
       icon: FileText,
       gradient: 'bg-gradient-to-r from-blue-500 to-blue-600'
     },
-    {
-      title: 'Applications Sent',
-      value: '28',
-      change: '+8 this week',
-      changeType: 'positive' as const,
-      icon: Briefcase,
-      gradient: 'bg-gradient-to-r from-green-500 to-green-600'
-    },
-    {
-      title: 'Saved Jobs',
-      value: '45',
-      change: '+12 today',
-      changeType: 'positive' as const,
-      icon: Heart,
-      gradient: 'bg-gradient-to-r from-red-500 to-red-600'
-    },
+    // {
+    //   title: 'Applications Sent',
+    //   value: '28',
+    //   change: '+8 this week',
+    //   changeType: 'positive' as const,
+    //   icon: Briefcase,
+    //   gradient: 'bg-gradient-to-r from-green-500 to-green-600'
+    // },
+    // {
+    //   title: 'Saved Jobs',
+    //   value: '45',
+    //   change: '+12 today',
+    //   changeType: 'positive' as const,
+    //   icon: Heart,
+    //   gradient: 'bg-gradient-to-r from-red-500 to-red-600'
+    // },
     {
       title: 'Profile Views',
       value: '156',
@@ -257,36 +257,36 @@ export function QuickActions() {
       href: '/resume/new',
       color: 'bg-gradient-to-r from-blue-500 to-blue-600'
     },
-    {
-      title: 'Browse Jobs',
-      description: 'Find your next opportunity',
-      icon: Briefcase,
-      href: '/jobs',
-      color: 'bg-gradient-to-r from-green-500 to-green-600'
-    },
-    {
-      title: 'Track Applications',
-      description: 'Monitor your job applications',
-      icon: BarChart3,
-      href: '/dashboard/applications',
-      color: 'bg-gradient-to-r from-purple-500 to-purple-600'
-    },
-    {
-      title: 'Set Goals',
-      description: 'Define your career objectives',
-      icon: Target,
-      href: '/dashboard/goals',
-      color: 'bg-gradient-to-r from-orange-500 to-orange-600'
-    }
+    // {
+    //   title: 'Browse Jobs',
+    //   description: 'Find your next opportunity',
+    //   icon: Briefcase,
+    //   href: '/jobs',
+    //   color: 'bg-gradient-to-r from-green-500 to-green-600'
+    // },
+    // {
+    //   title: 'Track Applications',
+    //   description: 'Monitor your job applications',
+    //   icon: BarChart3,
+    //   href: '/dashboard/applications',
+    //   color: 'bg-gradient-to-r from-purple-500 to-purple-600'
+    // },
+    // {
+    //   title: 'Set Goals',
+    //   description: 'Define your career objectives',
+    //   icon: Target,
+    //   href: '/dashboard/goals',
+    //   color: 'bg-gradient-to-r from-orange-500 to-orange-600'
+    // }
   ]
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-      {actions.map((action, index) => (
-        <ActionCard key={action.title} {...action} delay={index * 0.1} />
-      ))}
-    </div>
-  )
+  // return (
+  //   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+  //     {actions.map((action, index) => (
+  //       <ActionCard key={action.title} {...action} delay={index * 0.1} />
+  //     ))}
+  //   </div>
+  // )
 }
 
 export function DashboardActivity() {
