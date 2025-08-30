@@ -241,7 +241,7 @@ export default function ResumeBuilderPage() {
                 loadingText="Generating..."
                 className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-gradient-to-r from-primary to-pink-600 text-white font-medium rounded-lg hover:shadow-lg transition-all text-sm"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 " />
                 <span className="hidden sm:inline">Download PDF</span>
                 <span className="sm:hidden">PDF</span>
               </LoadingButton>

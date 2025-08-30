@@ -113,8 +113,9 @@ export default function SignInPage() {
     try {
       setAuthLoading(true)
       setError(null)
-      await loginEmail(data.email, data.password)
-      // Redirect will happen automatically via useEffect
+      await signInWithEmailAndPassword(auth, data.email, data.password)
+// Firebase will persist auth automatically
+    // Redirect happens via useEffect
     } catch (err: any) {
       setError(err.message || 'Failed to sign in with email')
     } finally {
@@ -322,6 +323,23 @@ export default function SignInPage() {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
               </LoadingButton>
+
+{/* Github Sign In */}
+<LoadingButton
+  isLoading={authLoading}
+  onClick={handleGithubSignIn}
+  loadingText="Signing in..."
+  className="w-full flex items-center justify-center space-x-3 bg-gray-900 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl group"
+>
+  <div className="flex items-center space-x-2">
+    <Github className="w-5 h-5" />
+    <span>Continue with GitHub</span>
+    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+  </div>
+</LoadingButton>
+
+
+
 
               {/* Email Sign In Form */}
               <form onSubmit={handleSubmit(handleEmailSignIn)} className="space-y-4">
