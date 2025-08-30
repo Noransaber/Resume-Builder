@@ -7,6 +7,15 @@ import CreativeTemplate from './Creative'
 import MinimalTemplate from './Minimal'
 import TechTemplate from './Tech'
 import ExecutiveTemplate from './Executive'
+import CorporateExecutive from './CorporateExecutive'
+import DesignerShowcase from './DesignerShowcase'
+import StartupFounder from './StartupFounder'
+import AcademicScholar from './AcademicScholar'
+import HealthcareProfessional from './HealthcareProfessional'
+import SalesProfessional from './SalesProfessional'
+import StudentFresh from './StudentFresh'
+import Freelancer from './Freelancer'
+import DigitalNomad from './DigitalNomad'
 
 // Template interface for type safety
 export interface TemplateData {
@@ -85,73 +94,121 @@ export interface Template {
 // Template registry with all available templates
 export const templates: Template[] = [
   {
-    id: 'modern',
-    name: 'Modern Professional',
-    category: 'Professional',
-    component: ModernTemplate,
-    thumbnail: '/images/thumbnails/modern-template-thumbnail.svg',
-    description: 'Clean and modern design perfect for corporate roles and tech professionals',
-    features: ['Clean layout', 'Professional styling', 'ATS-friendly', 'Modern typography'],
+    id: 'corporate-executive',
+    name: 'Corporate Executive',
+    category: 'Executive',
+    component: CorporateExecutive,
+    thumbnail: '/images/thumbnails/corporate-executive-thumbnail.svg',
+    description: 'Sophisticated template for senior corporate leaders with authority and prestige',
+    features: ['Executive presence', 'Corporate styling', 'Leadership focus', 'Premium design'],
     atsOptimized: true,
     popular: true,
     featured: true
   },
   {
-    id: 'classic',
-    name: 'Classic Elegant',
-    category: 'Professional',
-    component: ClassicTemplate,
-    thumbnail: '/images/thumbnails/classic-template-thumbnail.svg',
-    description: 'Timeless design that never goes out of style, perfect for traditional industries',
-    features: ['Traditional layout', 'Elegant typography', 'Conservative styling', 'Widely accepted'],
-    atsOptimized: true,
-    popular: false,
-    featured: false
-  },
-  {
-    id: 'creative',
-    name: 'Creative Portfolio',
+    id: 'designer-showcase',
+    name: 'Designer Showcase',
     category: 'Creative',
-    component: CreativeTemplate,
-    thumbnail: '/images/thumbnails/creative-template-thumbnail.svg',
-    description: 'Stand out with this creative and unique template for designers and creative professionals',
-    features: ['Creative layout', 'Visual elements', 'Portfolio showcase', 'Bold design'],
+    component: DesignerShowcase,
+    thumbnail: '/images/thumbnails/designer-showcase-thumbnail.svg',
+    description: 'Vibrant and creative template perfect for designers, artists, and creative professionals',
+    features: ['Creative layout', 'Portfolio showcase', 'Visual elements', 'Bold typography'],
     atsOptimized: false,
     popular: true,
     featured: true
   },
   {
-    id: 'minimal',
-    name: 'Minimalist Clean',
-    category: 'Modern',
-    component: MinimalTemplate,
-    thumbnail: '/images/thumbnails/minimal-template-thumbnail.svg',
-    description: 'Simple and elegant design focusing on content over decoration',
-    features: ['Minimalist design', 'Clean typography', 'Distraction-free', 'Professional'],
-    atsOptimized: true,
-    popular: false,
-    featured: false
-  },
-  {
-    id: 'tech',
-    name: 'Tech Innovator',
-    category: 'Technology',
-    component: TechTemplate,
-    thumbnail: '/images/thumbnails/tech-template-thumbnail.svg',
-    description: 'Perfect for tech professionals, developers, and engineers with a modern tech aesthetic',
-    features: ['Tech-focused design', 'Code-friendly layout', 'Modern styling', 'Skills showcase'],
+    id: 'startup-founder',
+    name: 'Startup Founder',
+    category: 'Entrepreneur',
+    component: StartupFounder,
+    thumbnail: '/images/thumbnails/startup-founder-thumbnail.svg',
+    description: 'Dynamic template for entrepreneurs and startup founders showcasing vision and achievements',
+    features: ['Entrepreneur focus', 'Growth metrics', 'Innovation showcase', 'Modern design'],
     atsOptimized: true,
     popular: true,
     featured: true
   },
   {
-    id: 'executive',
-    name: 'Executive Suite',
-    category: 'Executive',
-    component: ExecutiveTemplate,
-    thumbnail: '/images/thumbnails/executive-template-thumbnail.svg',
-    description: 'Premium template designed for C-level executives and senior leadership roles',
-    features: ['Executive styling', 'Leadership focus', 'Premium design', 'Authority presence'],
+    id: 'academic-scholar',
+    name: 'Academic Scholar',
+    category: 'Academic',
+    component: AcademicScholar,
+    thumbnail: '/images/thumbnails/academic-scholar-thumbnail.svg',
+    description: 'Professional template for researchers, professors, and academic professionals',
+    features: ['Academic credentials', 'Research focus', 'Publications showcase', 'Scholarly design'],
+    atsOptimized: true,
+    popular: false,
+    featured: true
+  },
+  {
+    id: 'healthcare-professional',
+    name: 'Healthcare Professional',
+    category: 'Healthcare',
+    component: HealthcareProfessional,
+    thumbnail: '/images/thumbnails/healthcare-professional-thumbnail.svg',
+    description: 'Compassionate and professional template for doctors, nurses, and healthcare workers',
+    features: ['Healthcare focus', 'Patient care emphasis', 'Medical credentials', 'Trust-building design'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'sales-professional',
+    name: 'Sales Professional',
+    category: 'Sales',
+    component: SalesProfessional,
+    thumbnail: '/images/thumbnails/sales-professional-thumbnail.svg',
+    description: 'Results-driven template for sales professionals showcasing achievements and metrics',
+    features: ['Sales metrics', 'Achievement focus', 'Revenue showcase', 'Professional presentation'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'student-fresh',
+    name: 'Student Fresh',
+    category: 'Student',
+    component: StudentFresh,
+    thumbnail: '/images/thumbnails/student-fresh-thumbnail.svg',
+    description: 'Fresh and energetic template for recent graduates and students entering the workforce',
+    features: ['Fresh perspective', 'Academic achievements', 'Project showcase', 'Modern appeal'],
+    atsOptimized: true,
+    popular: false,
+    featured: false
+  },
+  {
+    id: 'freelancer',
+    name: 'Freelancer',
+    category: 'Freelance',
+    component: Freelancer,
+    thumbnail: '/images/thumbnails/freelancer-thumbnail.svg',
+    description: 'Versatile template for independent contractors and freelancers showcasing expertise',
+    features: ['Portfolio focus', 'Service offerings', 'Client testimonials', 'Professional flexibility'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'digital-nomad',
+    name: 'Digital Nomad',
+    category: 'Remote',
+    component: DigitalNomad,
+    thumbnail: '/images/thumbnails/digital-nomad-thumbnail.svg',
+    description: 'Modern template for remote workers and digital nomads with global experience',
+    features: ['Remote work focus', 'Global experience', 'Cultural adaptability', 'Modern lifestyle'],
+    atsOptimized: true,
+    popular: false,
+    featured: false
+  },
+  {
+    id: 'modern-professional',
+    name: 'Modern Professional',
+    category: 'Professional',
+    component: ModernTemplate,
+    thumbnail: '/images/thumbnails/modern-professional-thumbnail.svg',
+    description: 'Clean and modern design perfect for corporate roles and tech professionals',
+    features: ['Clean layout', 'Professional styling', 'ATS-friendly', 'Modern typography'],
     atsOptimized: true,
     popular: true,
     featured: true
@@ -184,9 +241,14 @@ export const categories = [
   { id: 'all', name: 'All Templates', count: templates.length },
   { id: 'professional', name: 'Professional', count: templates.filter(t => t.category === 'Professional').length },
   { id: 'creative', name: 'Creative', count: templates.filter(t => t.category === 'Creative').length },
-  { id: 'modern', name: 'Modern', count: templates.filter(t => t.category === 'Modern').length },
-  { id: 'technology', name: 'Technology', count: templates.filter(t => t.category === 'Technology').length },
-  { id: 'executive', name: 'Executive', count: templates.filter(t => t.category === 'Executive').length }
+  { id: 'executive', name: 'Executive', count: templates.filter(t => t.category === 'Executive').length },
+  { id: 'entrepreneur', name: 'Entrepreneur', count: templates.filter(t => t.category === 'Entrepreneur').length },
+  { id: 'academic', name: 'Academic', count: templates.filter(t => t.category === 'Academic').length },
+  { id: 'healthcare', name: 'Healthcare', count: templates.filter(t => t.category === 'Healthcare').length },
+  { id: 'sales', name: 'Sales', count: templates.filter(t => t.category === 'Sales').length },
+  { id: 'student', name: 'Student', count: templates.filter(t => t.category === 'Student').length },
+  { id: 'freelance', name: 'Freelance', count: templates.filter(t => t.category === 'Freelance').length },
+  { id: 'remote', name: 'Remote', count: templates.filter(t => t.category === 'Remote').length }
 ]
 
 export default templates

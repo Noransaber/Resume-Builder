@@ -15,7 +15,6 @@ export default function Home() {
       <ResumeTemplates />
       <Proof />
       <CTA />
-      <Pricing />
       <Stats />
       <FAQ />
     </main>

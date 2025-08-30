@@ -128,7 +128,7 @@ const PricingPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 pt-20 relative overflow-hidden">
+    <div className="min-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 shadow-lg pt-20 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -160,7 +160,7 @@ const PricingPage = () => {
         >
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-600 rounded-3xl mb-8 shadow-2xl"
+            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary to-pink-600  rounded-3xl mb-8 shadow-2xl"
             whileHover={{ scale: 1.05, rotate: 5 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
@@ -169,7 +169,7 @@ const PricingPage = () => {
 
           <motion.h1
             variants={itemVariants}
-            className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 dark:from-purple-400 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-6"
+            className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-red-600 via-blue-600 to-pink-600 dark:from-red-400 dark:via-pink-400 dark:to-red-400 bg-clip-text text-transparent mb-6"
           >
             Choose Your Plan
           </motion.h1>
@@ -191,7 +191,7 @@ const PricingPage = () => {
               onClick={() => setBillingCycle('monthly')}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 billingCycle === 'monthly'
-                  ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-primary to-pink-600  text-white shadow-lg'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
@@ -201,7 +201,7 @@ const PricingPage = () => {
               onClick={() => setBillingCycle('yearly')}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
                 billingCycle === 'yearly'
-                  ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-primary to-pink-600  text-white shadow-lg'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
@@ -236,14 +236,14 @@ const PricingPage = () => {
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                    <div className="bg-gradient-to-r from-primary to-pink-600  text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
                       Most Popular
                     </div>
                   </div>
                 )}
 
                 <div className="text-center mb-6">
-                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-600 rounded-2xl mb-4 mx-auto">
+                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-pink-600  rounded-2xl mb-4 mx-auto">
                     <plan.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -279,7 +279,7 @@ const PricingPage = () => {
                 <motion.button
                   className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                     plan.buttonVariant === 'primary'
-                      ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white shadow-lg hover:shadow-xl'
+                      ? 'bg-gradient-to-r from-primary to-pink-600  text-white shadow-lg hover:shadow-xl'
                       : plan.buttonVariant === 'premium'
                       ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-lg hover:shadow-xl'
                       : 'border-2 border-purple-500 text-purple-600 dark:text-purple-400 hover:bg-purple-500 hover:text-white'
@@ -328,7 +328,7 @@ const PricingPage = () => {
                   whileHover={{ y: -5, scale: 1.02 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-600 rounded-xl mb-4 mx-auto">
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-primary to-pink-600  rounded-xl mb-4 mx-auto">
                     <feature.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -415,7 +415,7 @@ const PricingPage = () => {
                 Join thousands of successful professionals who have landed their dream jobs
               </p>
               <motion.button
-                className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-primary to-pink-600  hover:from-purple-600 hover:to-blue-700 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
