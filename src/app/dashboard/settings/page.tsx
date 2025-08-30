@@ -40,13 +40,25 @@ import {
   Database,
   Cloud,
   Wifi,
-  WifiOff
+  Calendar ,
+  Crown ,
+  Clock ,
+  WifiOff,
+  
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
 import { Sidebar } from '@/components/dashboard/Sidebar'
 import { PageWrapper } from '@/components/ui/PageLoader'
 import { toast } from 'react-hot-toast'
-
+import {
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    serverTimestamp,
+    type DocumentData,
+  } from "firebase/firestore";
+  import { updateProfile } from "firebase/auth";
 // Mock user data - in a real app, this would come from your backend
 const mockUserData = {
   name: 'John Doe',
@@ -78,41 +90,41 @@ const settingsSections = [
     icon: Shield,
     color: 'from-green-500 to-emerald-500'
   },
-  {
-    id: 'notifications',
-    title: 'Notifications',
-    description: 'Configure how and when you receive notifications',
-    icon: Bell,
-    color: 'from-purple-500 to-pink-500'
-  },
-  {
-    id: 'appearance',
-    title: 'Appearance',
-    description: 'Customize the look and feel of your dashboard',
-    icon: Palette,
-    color: 'from-orange-500 to-red-500'
-  },
-  {
-    id: 'resume',
-    title: 'Resume Preferences',
-    description: 'Set default preferences for your resume creation',
-    icon: FileText,
-    color: 'from-indigo-500 to-purple-500'
-  },
-  {
-    id: 'billing',
-    title: 'Billing & Subscription',
-    description: 'Manage your subscription and billing information',
-    icon: CreditCard,
-    color: 'from-teal-500 to-green-500'
-  },
-  {
-    id: 'data',
-    title: 'Data & Export',
-    description: 'Export your data or import from other platforms',
-    icon: Database,
-    color: 'from-pink-500 to-rose-500'
-  }
+//   {
+//     id: 'notifications',
+//     title: 'Notifications',
+//     description: 'Configure how and when you receive notifications',
+//     icon: Bell,
+//     color: 'from-purple-500 to-pink-500'
+//   },
+//   {
+//     id: 'appearance',
+//     title: 'Appearance',
+//     description: 'Customize the look and feel of your dashboard',
+//     icon: Palette,
+//     color: 'from-orange-500 to-red-500'
+//   },
+//   {
+//     id: 'resume',
+//     title: 'Resume Preferences',
+//     description: 'Set default preferences for your resume creation',
+//     icon: FileText,
+//     color: 'from-indigo-500 to-purple-500'
+//   },
+//   {
+//     id: 'billing',
+//     title: 'Billing & Subscription',
+//     description: 'Manage your subscription and billing information',
+//     icon: CreditCard,
+//     color: 'from-teal-500 to-green-500'
+//   },
+//   {
+//     id: 'data',
+//     title: 'Data & Export',
+//     description: 'Export your data or import from other platforms',
+//     icon: Database,
+//     color: 'from-pink-500 to-rose-500'
+//   }
 ]
 
 const containerVariants = {
