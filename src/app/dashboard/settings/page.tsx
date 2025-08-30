@@ -43,22 +43,14 @@ import {
   Calendar ,
   Crown ,
   Clock ,
-  WifiOff,
-  
+  WifiOff
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/authStore'
 import { Sidebar } from '@/components/dashboard/Sidebar'
 import { PageWrapper } from '@/components/ui/PageLoader'
 import { toast } from 'react-hot-toast'
-import {
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    serverTimestamp,
-    type DocumentData,
-  } from "firebase/firestore";
-  import { updateProfile } from "firebase/auth";
+import { doc, getDoc, setDoc, DocumentData } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 // Mock user data - in a real app, this would come from your backend
 const mockUserData = {
   name: 'John Doe',
@@ -90,41 +82,41 @@ const settingsSections = [
     icon: Shield,
     color: 'from-green-500 to-emerald-500'
   },
-//   {
-//     id: 'notifications',
-//     title: 'Notifications',
-//     description: 'Configure how and when you receive notifications',
-//     icon: Bell,
-//     color: 'from-purple-500 to-pink-500'
-//   },
-//   {
-//     id: 'appearance',
-//     title: 'Appearance',
-//     description: 'Customize the look and feel of your dashboard',
-//     icon: Palette,
-//     color: 'from-orange-500 to-red-500'
-//   },
-//   {
-//     id: 'resume',
-//     title: 'Resume Preferences',
-//     description: 'Set default preferences for your resume creation',
-//     icon: FileText,
-//     color: 'from-indigo-500 to-purple-500'
-//   },
-//   {
-//     id: 'billing',
-//     title: 'Billing & Subscription',
-//     description: 'Manage your subscription and billing information',
-//     icon: CreditCard,
-//     color: 'from-teal-500 to-green-500'
-//   },
-//   {
-//     id: 'data',
-//     title: 'Data & Export',
-//     description: 'Export your data or import from other platforms',
-//     icon: Database,
-//     color: 'from-pink-500 to-rose-500'
-//   }
+  {
+    id: 'notifications',
+    title: 'Notifications',
+    description: 'Configure how and when you receive notifications',
+    icon: Bell,
+    color: 'from-purple-500 to-pink-500'
+  },
+  {
+    id: 'appearance',
+    title: 'Appearance',
+    description: 'Customize the look and feel of your dashboard',
+    icon: Palette,
+    color: 'from-orange-500 to-red-500'
+  },
+  {
+    id: 'resume',
+    title: 'Resume Preferences',
+    description: 'Set default preferences for your resume creation',
+    icon: FileText,
+    color: 'from-indigo-500 to-purple-500'
+  },
+  {
+    id: 'billing',
+    title: 'Billing & Subscription',
+    description: 'Manage your subscription and billing information',
+    icon: CreditCard,
+    color: 'from-teal-500 to-green-500'
+  },
+  {
+    id: 'data',
+    title: 'Data & Export',
+    description: 'Export your data or import from other platforms',
+    icon: Database,
+    color: 'from-pink-500 to-rose-500'
+  }
 ]
 
 const containerVariants = {
@@ -165,12 +157,54 @@ export default function SettingsPage() {
   const { user } = useAuthStore()
   const [activeSection, setActiveSection] = useState('profile')
   const [isLoading, setIsLoading] = useState(false)
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
 
   // Profile Settings State
-  const [profileData, setProfileData] = useState(mockUserData)
+  const [profileData, setProfileData] = useState<DocumentData | null>(null)
   const [showPassword, setShowPassword] = useState(false)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDoc = doc(db, 'users', user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        if (userSnapshot.exists()) {
+          setProfileData(userSnapshot.data());
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  useEffect(() => {
+    const saveUserData = async () => {
+      if (user && hasUnsavedChanges) {
+        const userDoc = doc(db, 'users', user.uid);
+        await setDoc(userDoc, profileData, { merge: true });
+        setHasUnsavedChanges(false);
+      }
+    };
+
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        saveUserData();
+      }
+    };
+
+    window.addEventListener('keypress', handleKeyPress);
+    return () => {
+      window.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [profileData, hasUnsavedChanges, user]);
+
+
+  const handleChange = (field, value) => {
+    setProfileData((prev) => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
+  };
+
 
   // Privacy Settings State
   const [privacySettings, setPrivacySettings] = useState({
@@ -216,29 +250,29 @@ export default function SettingsPage() {
   })
 
   // Handle form changes
-  const handleProfileChange = (field: string, value: any) => {
-    setProfileData(prev => ({ ...prev, [field]: value }))
-    setHasUnsavedChanges(true)
-  }
+  const handleProfileChange = (field: keyof DocumentData, value: any) => {
+    setProfileData((prev: DocumentData | null) => ({ ...(prev || {}), [field]: value }));
+    setHasUnsavedChanges(true);
+  };
 
   const handlePrivacyChange = (field: string, value: any) => {
-    setPrivacySettings(prev => ({ ...prev, [field]: value }))
-    setHasUnsavedChanges(true)
+    setPrivacySettings((prev) => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   }
 
   const handleNotificationChange = (field: string, value: any) => {
-    setNotificationSettings(prev => ({ ...prev, [field]: value }))
-    setHasUnsavedChanges(true)
+    setNotificationSettings((prev) => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   }
 
   const handleAppearanceChange = (field: string, value: any) => {
-    setAppearanceSettings(prev => ({ ...prev, [field]: value }))
-    setHasUnsavedChanges(true)
+    setAppearanceSettings((prev) => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   }
 
   const handleResumeChange = (field: string, value: any) => {
-    setResumePreferences(prev => ({ ...prev, [field]: value }))
-    setHasUnsavedChanges(true)
+    setResumePreferences((prev) => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   }
 
   // Save settings
@@ -324,23 +358,23 @@ export default function SettingsPage() {
 
         <div className="flex-1">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-            {profileData.name}
+            {profileData?.name}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            {profileData.bio}
+            {profileData?.bio}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              <span>{profileData.email}</span>
+              <span>{profileData?.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              <span>{profileData.phone}</span>
+              <span>{profileData?.phone}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              <span>{profileData.location}</span>
+              <span>{profileData?.location}</span>
             </div>
           </div>
         </div>
@@ -360,7 +394,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="text"
-              value={profileData.name}
+              value={profileData?.name || ''}
               onChange={(e) => handleProfileChange('name', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             />
@@ -372,7 +406,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="email"
-              value={profileData.email}
+              value={profileData?.email || ''}
               onChange={(e) => handleProfileChange('email', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             />
@@ -384,7 +418,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="tel"
-              value={profileData.phone}
+              value={profileData?.phone || ''}
               onChange={(e) => handleProfileChange('phone', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             />
@@ -396,7 +430,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="text"
-              value={profileData.location}
+              value={profileData?.location || ''}
               onChange={(e) => handleProfileChange('location', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             />
@@ -408,7 +442,7 @@ export default function SettingsPage() {
             Bio
           </label>
           <textarea
-            value={profileData.bio}
+            value={profileData?.bio || ''}
             onChange={(e) => handleProfileChange('bio', e.target.value)}
             rows={4}
             className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300 resize-none"
@@ -431,7 +465,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="url"
-              value={profileData.website}
+              value={profileData?.website || ''}
               onChange={(e) => handleProfileChange('website', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               placeholder="https://yourwebsite.com"
@@ -444,7 +478,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="url"
-              value={profileData.linkedin}
+              value={profileData?.linkedin || ''}
               onChange={(e) => handleProfileChange('linkedin', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               placeholder="https://linkedin.com/in/yourprofile"
@@ -457,7 +491,7 @@ export default function SettingsPage() {
             </label>
             <input
               type="text"
-              value={profileData.twitter}
+              value={profileData?.twitter || ''}
               onChange={(e) => handleProfileChange('twitter', e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               placeholder="@yourhandle"
@@ -785,7 +819,7 @@ export default function SettingsPage() {
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-              </label>
+                </label>
             </div>
           </div>
         </div>
@@ -1209,11 +1243,11 @@ export default function SettingsPage() {
         {/* Data Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
-            <div className="text-2xl font-bold text-gray-800 dark:text-white">{profileData.resumeCount}</div>
+            <div className="text-2xl font-bold text-gray-800 dark:text-white">{profileData?.resumeCount}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Resumes</div>
           </div>
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
-            <div className="text-2xl font-bold text-gray-800 dark:text-white">{profileData.profileViews}</div>
+            <div className="text-2xl font-bold text-gray-800 dark:text-white">{profileData?.profileViews}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Profile Views</div>
           </div>
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
