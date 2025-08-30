@@ -64,13 +64,13 @@ const ContactUsPage = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      content: 'hello@resumebuilder.com',
+      content: 'noransaber685@gmail.com',
       description: 'Send us an email anytime!'
     },
     {
       icon: Phone,
       title: 'Call Us',
-      content: '+1 (555) 123-4567',
+      content: '+20 01030706893',
       description: 'Mon-Fri from 8am to 6pm.'
     },
     {
@@ -82,7 +82,7 @@ const ContactUsPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 shadow-lg pt-20 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 pt-20 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -114,7 +114,7 @@ const ContactUsPage = () => {
         >
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary to-pink-600 rounded-3xl mb-8 shadow-2xl"
+            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl mb-8 shadow-2xl"
             whileHover={{ scale: 1.05, rotate: 5 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
@@ -154,7 +154,7 @@ const ContactUsPage = () => {
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-pink-600 rounded-2xl mb-6 mx-auto">
+                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-6 mx-auto">
                   <info.icon className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
@@ -211,7 +211,7 @@ const ContactUsPage = () => {
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="bg-gradient-to-r from-primary to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
                   >
                     Send Another Message
                   </button>
@@ -303,7 +303,7 @@ const ContactUsPage = () => {
                     variants={itemVariants}
                     type="submit"
                     disabled={loading}
-                    className={`w-full bg-gradient-to-r from-primary to-pink-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none`}
+                    className={`w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
