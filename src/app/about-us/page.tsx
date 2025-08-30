@@ -17,15 +17,15 @@ export default function About() {
       </Head>
 
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white text-center px-6">
+      <section className="relative  min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900 text-white text-center px-6 pt-32">
         <div className="max-w-3xl">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl sm:text-6xl font-extrabold mb-6"
+            className="text-5xl sm:text-6xl font-extrabold mb-6 text-gray-900 dark:text-white"
           >
-            About <span className="text-yellow-300">Resume Builder</span>
+            About <span className="text-primary">Resume Builder</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -38,9 +38,9 @@ export default function About() {
           </motion.p>
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="bg-yellow-400 text-black font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 mx-auto"
+            className="bg-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 mx-auto"
           >
-            Get Started <ArrowRight className="w-5 h-5" />
+            Sign In <ArrowRight className="w-5 h-5" />
           </motion.button>
         </div>
       </section>
@@ -69,7 +69,7 @@ export default function About() {
             className="rounded-2xl overflow-hidden shadow-xl"
           >
             <Image
-              src="/mission.jpg"
+              src="https://images.unsplash.com/photo-1521316730702-829a8e30dfd0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Mission"
               width={600}
               height={400}
@@ -159,38 +159,58 @@ export default function About() {
 
       {/* Team Section */}
       <section className="py-20 bg-white dark:bg-gray-800">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-12 text-gray-900 dark:text-white">
-            Meet Our Team
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-12">
-            {['Alice', 'Bob', 'Charlie'].map((name, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                className="flex flex-col items-center text-center"
-              >
-                <Image
-                  src="/avatar-placeholder.png"
-                  alt={name}
-                  width={150}
-                  height={150}
-                  className="rounded-full mb-4"
-                />
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {name}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">Frontend Developer</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+  <div className="max-w-6xl mx-auto px-6 text-center">
+    <h2 className="text-4xl font-bold mb-12 text-gray-900 dark:text-white">
+      Meet Our Team
+    </h2>
+
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-12">
+      {[
+        {
+          name: "Alice",
+          role: "Frontend Developer",
+          image:
+            "https://plus.unsplash.com/premium_photo-1672239496290-5061cfee7ebb?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+        {
+          name: "Bob",
+          role: "Backend Developer",
+          image:
+            "https://images.unsplash.com/photo-1625181796571-7f0d4571ab12?q=80&w=702&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+        {
+          name: "Charlie",
+          role: "UI/UX Designer",
+          image:
+            "https://images.unsplash.com/photo-1453396450673-3fe83d2db2c4?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+      ].map((member, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.2 }}
+          className="flex flex-col items-center text-center"
+        >
+          <Image
+            src={member.image}
+            alt={member.name}
+            width={150}
+            height={150}
+            className="rounded-full mb-4 object-cover"
+          />
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            {member.name}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300">{member.role}</p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center">
+      <section className="py-20 text-white text-center bg-gradient-to-br from-gray-900 via-gray-800 to-black dark:bg-gradient-to-br dark:from-zinc-900 dark:via-zinc-800 dark:to-black">
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -210,9 +230,9 @@ export default function About() {
         </motion.p>
         <motion.button
           whileHover={{ scale: 1.05 }}
-          className="bg-yellow-400 text-black font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all"
+          className="bg-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all"
         >
-          Get Started Now
+          Sign In Now
         </motion.button>
       </section>
     </>

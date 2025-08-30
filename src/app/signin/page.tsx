@@ -395,6 +395,27 @@ export default function SignInPage() {
               </form>
             </div>
 
+{/* Sign Up Prompt */}
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.9 }}
+  className="text-center mb-8"
+>
+  <p className="text-gray-600 dark:text-gray-300 text-base mb-4">
+    Don’t have an account yet?
+    <Link
+    href="/signup"
+    className="inline-flex items-center space-x-2 px-3 py-3 text-primary font-semibold  hover:text-white transition-all duration-300 group shadow-sm"
+  >
+    <span>Sign up now</span>
+    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+  </Link>
+  </p>
+
+</motion.div>
+
+
             {/* Divider */}
             <motion.div
               initial={{ opacity: 0 }}
