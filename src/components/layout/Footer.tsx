@@ -30,7 +30,7 @@ const footerLinks = {
       { name: 'Resume Builder', href: '/resume-templates', description: 'Create professional resumes' },
       { name: 'Templates', href: '/resume-templates', description: 'Choose from 50+ designs' },
       { name: 'Cover Letters', href: '/cover-letters', description: 'AI-powered letter builder' },
-      { name: 'Job Search', href: '/jobs', description: 'Find your dream job' },
+      // { name: 'Job Search', href: '/jobs', description: 'Find your dream job' },
       { name: 'Pricing', href: '/pricing', description: 'Plans for everyone' },
     ]
   },
@@ -42,7 +42,7 @@ const footerLinks = {
       { name: 'Resume Guide', href: '/guide', description: 'Expert writing tips' },
       { name: 'Career Advice', href: '/blog', description: 'Industry insights' },
       { name: 'Interview Tips', href: '/interview-tips', description: 'Ace your interviews' },
-      { name: 'Salary Guide', href: '/salary-guide', description: 'Know your worth' },
+      // { name: 'Salary Guide', href: '/salary-guide', description: 'Know your worth' },
       { name: 'Help Center', href: '/help', description: 'Get instant support' },
     ]
   },
@@ -53,8 +53,8 @@ const footerLinks = {
     links: [
       { name: 'About Us', href: '/about-us', description: 'Our mission & vision' },
       { name: 'Careers', href: '/careers', description: 'Join our team' },
-      { name: 'Press', href: '/press', description: 'Latest news' },
-      { name: 'Partners', href: '/partners', description: 'Strategic alliances' },
+      // { name: 'Press', href: '/press', description: 'Latest news' },
+      // { name: 'Partners', href: '/partners', description: 'Strategic alliances' },
       { name: 'Contact', href: '/contact-us', description: 'Get in touch' },
     ]
   },
@@ -66,7 +66,7 @@ const footerLinks = {
       { name: 'Privacy Policy', href: '/privacy-policy', description: 'Data protection' },
       { name: 'Terms of Service', href: '/terms-and-conditions', description: 'Usage terms' },
       { name: 'Cookie Policy', href: '/cookies', description: 'Cookie preferences' },
-      { name: 'GDPR', href: '/gdpr', description: 'EU compliance' },
+      // { name: 'GDPR', href: '/gdpr', description: 'EU compliance' },
     ]
   }
 }

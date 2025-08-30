@@ -49,30 +49,30 @@ const navigationItems = [
     description: 'Manage your resumes',
     badge: 'New'
   },
-  {
-    name: 'Applied Jobs',
-    href: '/dashboard/applications',
-    icon: Briefcase,
-    description: 'Track applications'
-  },
-  {
-    name: 'Saved Jobs',
-    href: '/dashboard/saved',
-    icon: Heart,
-    description: 'Bookmarked positions'
-  },
-  {
-    name: 'Analytics',
-    href: '/dashboard/analytics',
-    icon: BarChart3,
-    description: 'Performance insights'
-  },
-  {
-    name: 'Goals',
-    href: '/dashboard/goals',
-    icon: Target,
-    description: 'Career objectives'
-  }
+  // {
+  //   name: 'Applied Jobs',
+  //   href: '/dashboard/applications',
+  //   icon: Briefcase,
+  //   description: 'Track applications'
+  // },
+  // {
+  //   name: 'Saved Jobs',
+  //   href: '/dashboard/saved',
+  //   icon: Heart,
+  //   description: 'Bookmarked positions'
+  // },
+  // {
+  //   name: 'Analytics',
+  //   href: '/dashboard/analytics',
+  //   icon: BarChart3,
+  //   description: 'Performance insights'
+  // },
+  // {
+  //   name: 'Goals',
+  //   href: '/dashboard/goals',
+  //   icon: Target,
+  //   description: 'Career objectives'
+  // }
 ]
 
 const quickActions = [
@@ -80,7 +80,7 @@ const quickActions = [
     name: 'New Resume',
     href: '/resume/new',
     icon: Plus,
-    color: 'bg-primary hover:bg-primary/90'
+    color: 'bg-gradient-to-br from-purple-400 to-pink-400'
   }
 ]
 
@@ -102,7 +102,7 @@ export function Sidebar({ className = '' }: SidebarProps) {
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <div className="w-10 h-10 bg-gradient-to-r from-primary to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl flex items-center justify-center shadow-lg">
             <span className="text-white font-bold text-lg">R</span>
           </div>
           <div>
@@ -226,7 +226,7 @@ export function Sidebar({ className = '' }: SidebarProps) {
       {/* Footer Actions */}
       <div className="p-6 border-t border-gray-200 dark:border-gray-800">
         <div className="space-y-2">
-          <Link href="/settings">
+          <Link href="/dashboard/settings">
             <motion.div
               whileHover={{ scale: 1.02, x: 4 }}
               whileTap={{ scale: 0.98 }}
