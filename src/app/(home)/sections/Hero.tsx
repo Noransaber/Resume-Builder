@@ -251,7 +251,7 @@ export function Hero() {
           {/* Right Column - Enhanced Visual */}
           <motion.div
             variants={itemVariants}
-            className="relative mx-auto w-full max-w-2xl"
+            className="relative mx-auto w-full max-w-2xl h-full"
             style={{ rotateX, rotateY }}
             onMouseMove={(e) => {
               const rect = e.currentTarget.getBoundingClientRect()

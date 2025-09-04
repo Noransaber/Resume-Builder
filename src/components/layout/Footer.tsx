@@ -295,7 +295,7 @@ export function Footer() {
         </motion.div>
 
         {/* Enhanced Newsletter Section */}
-        <motion.div
+        {/* <motion.div
           variants={itemVariants}
           className="py-16 border-t border-white/20"
         >
@@ -345,7 +345,7 @@ export function Footer() {
               </motion.div>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Enhanced Bottom Section */}
         <motion.div
