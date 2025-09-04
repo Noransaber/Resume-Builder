@@ -398,86 +398,85 @@ export default function ResumeTemplatesPage() {
                 className="grid gap-8 lg:grid-cols-3"
               >
                 {featuredTemplates.slice(0, 3).map((template, index) => (
-                  <motion.div
-                    key={template.id}
-                    variants={itemVariants}
-                    whileHover="hover"
-                    className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/20"
-                  >
-                    {/* Template Thumbnail */}
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <Image
-                        src={template.previewImage}
-                        alt={template.name}
-                        width={400}
-                        height={300}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                  <Link href={`/resume/builder/${template.id}`} key={template.id} className="block">
+                    <motion.div
+                      variants={{ ...itemVariants, ...cardHoverVariants }}
+                      whileHover="hover"
+                      className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/20 dark:border-gray-700/20"
+                    >
+                      {/* Template Thumbnail */}
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <Image
+                          src={template.previewImage}
+                          alt={template.name}
+                          width={400}
+                          height={300}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
 
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-purple-500/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-purple-500/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                      {/* Floating Badges */}
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
-                        className="absolute top-6 left-6 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl p-3 shadow-xl"
-                      >
-                        <Flame className="w-5 h-5 text-white" />
-                      </motion.div>
-
-                      {/* Use Template Button */}
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                        {/* Floating Badges */}
                         <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
+                          className="absolute top-6 left-6 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl p-3 shadow-xl"
                         >
-                          <Link href={`/resume/builder/${template.id}`}>
-                            Use This Template
-                          </Link>
+                          <Flame className="w-5 h-5 text-white" />
                         </motion.div>
-                      </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className="p-8">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-                            {template.name}
-                          </h3>
-                          <p className="text-purple-600 dark:text-purple-400 font-semibold">
-                            {template.category}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                            {template.rating}
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                        {template.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2">
-                        {template.features.slice(0, 2).map((feature, featureIndex) => (
-                          <span
-                            key={featureIndex}
-                            className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium"
+                        {/* Use Template Button */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                          <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
                           >
-                            {feature}
-                          </span>
-                        ))}
+                            Use This Template
+                          </motion.div>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+
+                      {/* Content */}
+                      <div className="p-8">
+                        <div className="flex items-start justify-between mb-4">
+                          <div>
+                            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                              {template.name}
+                            </h3>
+                            <p className="text-purple-600 dark:text-purple-400 font-semibold">
+                              {template.category}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                              {template.rating}
+                            </span>
+                          </div>
+                        </div>
+
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                          {template.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2">
+                          {template.features.slice(0, 2).map((feature, featureIndex) => (
+                            <span
+                              key={featureIndex}
+                              className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </Link>
                 ))}
               </motion.div>
             </div>
@@ -513,151 +512,149 @@ export default function ResumeTemplatesPage() {
               className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
               {filteredTemplates.map((template, index) => (
-                <motion.div
-                  key={template.id}
-                  variants={itemVariants}
-                  whileHover="hover"
-                  variants={cardHoverVariants}
-                  className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl border border-white/20 dark:border-gray-700/20"
-                >
-                  {/* Popular Badge */}
-                  {template.popular && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
-                      className="absolute top-6 left-6 z-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-3 shadow-xl"
-                    >
-                      <Flame className="w-5 h-5 text-white" />
-                    </motion.div>
-                  )}
-
-                  {/* Featured Badge */}
-                  {template.featured && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.7 + index * 0.1, type: "spring", stiffness: 200 }}
-                      className="absolute top-6 right-6 z-20 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl p-3 shadow-xl"
-                    >
-                      <Crown className="w-5 h-5 text-white" />
-                    </motion.div>
-                  )}
-
-                  {/* Template Thumbnail */}
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={template.previewImage}
-                      alt={template.name}
-                      width={400}
-                      height={300}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-purple-500/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* ATS Badge */}
-                    {template.atsOptimized && (
+                <Link href={`/resume/builder/${template.id}`} key={template.id} className="block">
+                  <motion.div
+                    variants={{ ...itemVariants, ...cardHoverVariants }}
+                    whileHover="hover"
+                    className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl border border-white/20 dark:border-gray-700/20"
+                  >
+                    {/* Popular Badge */}
+                    {template.popular && (
                       <motion.div
                         initial={{ scale: 0 }}
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.9 + index * 0.1, type: "spring", stiffness: 200 }}
-                        className="absolute bottom-6 left-6 bg-green-500 rounded-2xl p-3 shadow-xl"
+                        transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
+                        className="absolute top-6 left-6 z-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-3 shadow-xl"
                       >
-                        <CheckCircle className="w-5 h-5 text-white" />
+                        <Flame className="w-5 h-5 text-white" />
                       </motion.div>
                     )}
 
-                    {/* Use Template Button */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    {/* Featured Badge */}
+                    {template.featured && (
                       <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.7 + index * 0.1, type: "spring", stiffness: 200 }}
+                        className="absolute top-6 right-6 z-20 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl p-3 shadow-xl"
                       >
-                        <Link href={`/resume/builder/${template.id}`}>
-                          Use This Template
-                        </Link>
+                        <Crown className="w-5 h-5 text-white" />
                       </motion.div>
-                    </div>
+                    )}
 
-                    {/* Rating Badge */}
-                    <div className="absolute bottom-6 right-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-lg">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-bold text-gray-800 dark:text-white">
-                          {template.rating}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                    {/* Template Thumbnail */}
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <Image
+                        src={template.previewImage}
+                        alt={template.name}
+                        width={400}
+                        height={300}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
 
-                  {/* Template Info */}
-                  <div className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2 group-hover:text-purple-600 transition-colors duration-300">
-                          {template.name}
-                        </h3>
-                        <p className="text-purple-600 dark:text-purple-400 font-semibold">
-                          {template.category}
-                        </p>
-                      </div>
-                    </div>
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-purple-500/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-6 leading-relaxed">
-                      {template.description}
-                    </p>
-
-                    {/* Features Tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {template.features.slice(0, 3).map((feature, featureIndex) => (
-                        <motion.span
-                          key={featureIndex}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
+                      {/* ATS Badge */}
+                      {template.atsOptimized && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
                           viewport={{ once: true }}
-                          transition={{ delay: 0.1 + featureIndex * 0.1 }}
-                          className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium"
+                          transition={{ delay: 0.9 + index * 0.1, type: "spring", stiffness: 200 }}
+                          className="absolute bottom-6 left-6 bg-green-500 rounded-2xl p-3 shadow-xl"
                         >
-                          {feature}
-                        </motion.span>
-                      ))}
-                    </div>
+                          <CheckCircle className="w-5 h-5 text-white" />
+                        </motion.div>
+                      )}
 
-                    {/* Action Buttons */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-                        <Download className="w-4 h-4" />
-                        <span className="text-xs font-medium">{template.downloads}</span>
+                      {/* Use Template Button */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                        <motion.div
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
+                        >
+                          Use This Template
+                        </motion.div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 text-gray-400 hover:text-purple-600 transition-colors rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20"
-                          title="Preview template"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 text-gray-400 hover:text-pink-600 transition-colors rounded-xl hover:bg-pink-50 dark:hover:bg-pink-900/20"
-                          title="Download template"
-                        >
+                      {/* Rating Badge */}
+                      <div className="absolute bottom-6 right-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-lg">
+                        <div className="flex items-center gap-1">
+                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                          <span className="text-sm font-bold text-gray-800 dark:text-white">
+                            {template.rating}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Template Info */}
+                    <div className="p-8">
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                            {template.name}
+                          </h3>
+                          <p className="text-purple-600 dark:text-purple-400 font-semibold">
+                            {template.category}
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-6 leading-relaxed">
+                        {template.description}
+                      </p>
+
+                      {/* Features Tags */}
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {template.features.slice(0, 3).map((feature, featureIndex) => (
+                          <motion.span
+                            key={featureIndex}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 + featureIndex * 0.1 }}
+                            className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium"
+                          >
+                            {feature}
+                          </motion.span>
+                        ))}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
                           <Download className="w-4 h-4" />
-                        </motion.button>
+                          <span className="text-xs font-medium">{template.downloads}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="p-2 text-gray-400 hover:text-purple-600 transition-colors rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                            title="Preview template"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="p-2 text-gray-400 hover:text-pink-600 transition-colors rounded-xl hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                            title="Download template"
+                          >
+                            <Download className="w-4 h-4" />
+                          </motion.button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               ))}
             </motion.div>
 
