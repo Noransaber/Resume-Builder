@@ -94,6 +94,78 @@ export interface Template {
 // Template registry with all available templates
 export const templates: Template[] = [
   {
+    id: 'modern',
+    name: 'Modern Professional',
+    category: 'Professional',
+    component: ModernTemplate,
+    thumbnail: '/images/thumbnails/modern-template-thumbnail.svg',
+    description: 'Clean and contemporary design perfect for modern professionals',
+    features: ['Clean layout', 'Modern typography', 'Professional styling', 'ATS optimized'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'classic',
+    name: 'Classic Elegant',
+    category: 'Professional',
+    component: ClassicTemplate,
+    thumbnail: '/images/thumbnails/classic-template-thumbnail.svg',
+    description: 'Traditional, professional design with serif typography and conservative styling',
+    features: ['Traditional layout', 'Serif typography', 'Conservative styling', 'Professional appeal'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'creative',
+    name: 'Creative Modern',
+    category: 'Creative',
+    component: CreativeTemplate,
+    thumbnail: '/images/thumbnails/creative-template-thumbnail.svg',
+    description: 'Bold and innovative design for creative professionals and artists',
+    features: ['Creative layout', 'Bold colors', 'Unique design', 'Visual impact'],
+    atsOptimized: false,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal Clean',
+    category: 'Professional',
+    component: MinimalTemplate,
+    thumbnail: '/images/thumbnails/minimal-template-thumbnail.svg',
+    description: 'Minimalist design focusing on content with clean typography',
+    features: ['Minimal design', 'Clean typography', 'Content focused', 'ATS friendly'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'tech',
+    name: 'Tech Professional',
+    category: 'Technology',
+    component: TechTemplate,
+    thumbnail: '/images/thumbnails/tech-template-thumbnail.svg',
+    description: 'Modern template designed specifically for tech professionals and developers',
+    features: ['Tech focused', 'Modern design', 'Skills showcase', 'Developer friendly'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
+    id: 'executive',
+    name: 'Executive Leadership',
+    category: 'Executive',
+    component: ExecutiveTemplate,
+    thumbnail: '/images/thumbnails/executive-template-thumbnail.svg',
+    description: 'Premium template for executives and senior leadership positions',
+    features: ['Executive presence', 'Premium design', 'Leadership focus', 'Professional authority'],
+    atsOptimized: true,
+    popular: true,
+    featured: true
+  },
+  {
     id: 'corporate-executive',
     name: 'Corporate Executive',
     category: 'Executive',
@@ -242,6 +314,7 @@ export const categories = [
   { id: 'professional', name: 'Professional', count: templates.filter(t => t.category === 'Professional').length },
   { id: 'creative', name: 'Creative', count: templates.filter(t => t.category === 'Creative').length },
   { id: 'executive', name: 'Executive', count: templates.filter(t => t.category === 'Executive').length },
+  { id: 'technology', name: 'Technology', count: templates.filter(t => t.category === 'Technology').length },
   { id: 'entrepreneur', name: 'Entrepreneur', count: templates.filter(t => t.category === 'Entrepreneur').length },
   { id: 'academic', name: 'Academic', count: templates.filter(t => t.category === 'Academic').length },
   { id: 'healthcare', name: 'Healthcare', count: templates.filter(t => t.category === 'Healthcare').length },
