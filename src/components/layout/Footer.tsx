@@ -39,7 +39,7 @@ const footerLinks = {
     icon: Target,
     gradient: 'from-purple-500 to-pink-500',
     links: [
-      { name: 'Resume Guide', href: '/guide', description: 'Expert writing tips' },
+      // { name: 'Resume Guide', href: '/guide', description: 'Expert writing tips' },
       { name: 'Career Advice', href: '/blog', description: 'Industry insights' },
       { name: 'Interview Tips', href: '/interview-tips', description: 'Ace your interviews' },
       // { name: 'Salary Guide', href: '/salary-guide', description: 'Know your worth' },
@@ -52,7 +52,7 @@ const footerLinks = {
     gradient: 'from-green-500 to-emerald-500',
     links: [
       { name: 'About Us', href: '/about-us', description: 'Our mission & vision' },
-      { name: 'Careers', href: '/careers', description: 'Join our team' },
+      // { name: 'Careers', href: '/careers', description: 'Join our team' },
       // { name: 'Press', href: '/press', description: 'Latest news' },
       // { name: 'Partners', href: '/partners', description: 'Strategic alliances' },
       { name: 'Contact', href: '/contact-us', description: 'Get in touch' },

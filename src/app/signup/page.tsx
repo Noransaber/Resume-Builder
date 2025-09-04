@@ -67,7 +67,7 @@ const SignupPage = () => {
       }
     }
     return (
-        <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20">
+        <div className="relative pt-32 min-h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20">
           {/* Animated background elements */}
           <div className="absolute inset-0 overflow-hidden">
             <motion.div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-500/20 rounded-full blur-3xl" variants={floatingVariants} animate="animate" />

@@ -60,7 +60,9 @@ export function Header() {
       icon: Heart,
       description: 'Get in Touch',
       gradient: 'from-rose-500 to-pink-500'
-    }
+    },
+
+
   ]
 
   const containerVariants = {
