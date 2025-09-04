@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import {
   User,
   Shield,
@@ -40,84 +40,90 @@ import {
   Database,
   Cloud,
   Wifi,
-  Calendar ,
-  Crown ,
-  Clock ,
-  WifiOff
-} from 'lucide-react'
-import { useAuthStore } from '@/stores/authStore'
-import { Sidebar } from '@/components/dashboard/Sidebar'
-import { PageWrapper } from '@/components/ui/PageLoader'
-import { toast } from 'react-hot-toast'
-import { doc, getDoc, setDoc, DocumentData } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+  Calendar,
+  Crown,
+  Clock,
+  WifiOff,
+} from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
+import { Sidebar } from "@/components/dashboard/Sidebar";
+import { PageWrapper } from "@/components/ui/PageLoader";
+import { toast } from "react-hot-toast";
+import { doc, getDoc, setDoc, DocumentData } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
+import { db } from "@/lib/firebase";
+import {
+  saveUserProfileToCookies,
+  loadUserProfileFromCookies,
+  UserProfileCookies,
+} from "@/lib/cookies";
 // Mock user data - in a real app, this would come from your backend
 const mockUserData = {
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '+1 (555) 123-4567',
-  location: 'San Francisco, CA',
-  avatar: '/images/avatars/default-avatar.svg',
-  bio: 'Passionate software engineer with 5+ years of experience in full-stack development.',
-  website: 'https://johndoe.dev',
-  linkedin: 'https://linkedin.com/in/johndoe',
-  twitter: '@johndoe',
-  joinDate: 'January 2023',
+  name: "John Doe",
+  email: "john.doe@example.com",
+  phone: "+1 (555) 123-4567",
+  location: "San Francisco, CA",
+  avatar: "/images/avatars/default-avatar.svg",
+  bio: "Passionate software engineer with 5+ years of experience in full-stack development.",
+  website: "https://johndoe.dev",
+  linkedin: "https://linkedin.com/in/johndoe",
+  twitter: "@johndoe",
+  joinDate: "January 2023",
   resumeCount: 12,
-  profileViews: 156
-}
+  profileViews: 156,
+};
 
 const settingsSections = [
   {
-    id: 'profile',
-    title: 'Profile Information',
-    description: 'Manage your personal information and public profile',
+    id: "profile",
+    title: "Profile Information",
+    description: "Manage your personal information and public profile",
     icon: User,
-    color: 'from-blue-500 to-cyan-500'
+    color: "from-blue-500 to-cyan-500",
   },
   {
-    id: 'privacy',
-    title: 'Privacy & Security',
-    description: 'Control your privacy settings and account security',
+    id: "privacy",
+    title: "Privacy & Security",
+    description: "Control your privacy settings and account security",
     icon: Shield,
-    color: 'from-green-500 to-emerald-500'
+    color: "from-green-500 to-emerald-500",
   },
   {
-    id: 'notifications',
-    title: 'Notifications',
-    description: 'Configure how and when you receive notifications',
+    id: "notifications",
+    title: "Notifications",
+    description: "Configure how and when you receive notifications",
     icon: Bell,
-    color: 'from-purple-500 to-pink-500'
+    color: "from-purple-500 to-pink-500",
   },
   {
-    id: 'appearance',
-    title: 'Appearance',
-    description: 'Customize the look and feel of your dashboard',
+    id: "appearance",
+    title: "Appearance",
+    description: "Customize the look and feel of your dashboard",
     icon: Palette,
-    color: 'from-orange-500 to-red-500'
+    color: "from-orange-500 to-red-500",
   },
   {
-    id: 'resume',
-    title: 'Resume Preferences',
-    description: 'Set default preferences for your resume creation',
+    id: "resume",
+    title: "Resume Preferences",
+    description: "Set default preferences for your resume creation",
     icon: FileText,
-    color: 'from-indigo-500 to-purple-500'
+    color: "from-indigo-500 to-purple-500",
   },
   {
-    id: 'billing',
-    title: 'Billing & Subscription',
-    description: 'Manage your subscription and billing information',
+    id: "billing",
+    title: "Billing & Subscription",
+    description: "Manage your subscription and billing information",
     icon: CreditCard,
-    color: 'from-teal-500 to-green-500'
+    color: "from-teal-500 to-green-500",
   },
   {
-    id: 'data',
-    title: 'Data & Export',
-    description: 'Export your data or import from other platforms',
+    id: "data",
+    title: "Data & Export",
+    description: "Export your data or import from other platforms",
     icon: Database,
-    color: 'from-pink-500 to-rose-500'
-  }
-]
+    color: "from-pink-500 to-rose-500",
+  },
+];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -125,10 +131,10 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-}
+      delayChildren: 0.2,
+    },
+  },
+};
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20, scale: 0.95 },
@@ -140,82 +146,91 @@ const itemVariants = {
       duration: 0.6,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100
-    }
-  }
-}
+      stiffness: 100,
+    },
+  },
+};
 
 const floatingVariants = {
   animate: {
     y: [0, -15, 0],
     rotate: [0, 3, -3, 0],
-    transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' }
-  }
-}
+    transition: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+  },
+};
 
 export default function SettingsPage() {
-  const { user } = useAuthStore()
-  const [activeSection, setActiveSection] = useState('profile')
-  const [isLoading, setIsLoading] = useState(false)
-  const [showSaveDialog, setShowSaveDialog] = useState(false)
+  const { user } = useAuthStore();
+  const [activeSection, setActiveSection] = useState("profile");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
 
   // Profile Settings State
-  const [profileData, setProfileData] = useState<DocumentData | null>(null)
-  const [showPassword, setShowPassword] = useState(false)
+  const [profileData, setProfileData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    bio: "",
+    website: "",
+    linkedin: "",
+    twitter: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const loadUserData = () => {
       if (user) {
-        const userDoc = doc(db, 'users', user.uid);
-        const userSnapshot = await getDoc(userDoc);
-        if (userSnapshot.exists()) {
-          setProfileData(userSnapshot.data());
-        }
+        // Load Firebase Auth data (name and email)
+        const firebaseData = {
+          name: user.displayName || "",
+          email: user.email || "",
+        };
+
+        // Load cookie data (other profile fields)
+        const cookieData = loadUserProfileFromCookies();
+
+        // Merge both data sources with proper defaults
+        setProfileData({
+          name: firebaseData.name,
+          email: firebaseData.email,
+          phone: cookieData.phone || "",
+          location: cookieData.location || "",
+          bio: cookieData.bio || "",
+          website: cookieData.website || "",
+          linkedin: cookieData.linkedin || "",
+          twitter: cookieData.twitter || "",
+        });
       }
     };
 
-    fetchUserData();
+    loadUserData();
   }, [user]);
 
   useEffect(() => {
-    const saveUserData = async () => {
-      if (user && hasUnsavedChanges) {
-        const userDoc = doc(db, 'users', user.uid);
-        await setDoc(userDoc, profileData, { merge: true });
-        setHasUnsavedChanges(false);
-      }
-    };
-
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        saveUserData();
+      if (event.key === "Enter" && hasUnsavedChanges) {
+        handleSaveSettings();
       }
     };
 
-    window.addEventListener('keypress', handleKeyPress);
+    window.addEventListener("keypress", handleKeyPress);
     return () => {
-      window.removeEventListener('keypress', handleKeyPress);
+      window.removeEventListener("keypress", handleKeyPress);
     };
-  }, [profileData, hasUnsavedChanges, user]);
-
-
-  const handleChange = (field, value) => {
-    setProfileData((prev) => ({ ...prev, [field]: value }));
-    setHasUnsavedChanges(true);
-  };
-
+  }, [hasUnsavedChanges]);
 
   // Privacy Settings State
   const [privacySettings, setPrivacySettings] = useState({
-    profileVisibility: 'public',
+    profileVisibility: "public",
     showEmail: true,
     showPhone: false,
     showLocation: true,
     allowMessaging: true,
     dataCollection: true,
-    analyticsTracking: true
-  })
+    analyticsTracking: true,
+  });
 
   // Notification Settings State
   const [notificationSettings, setNotificationSettings] = useState({
@@ -226,83 +241,127 @@ export default function SettingsPage() {
     marketingEmails: false,
     securityAlerts: true,
     weeklyDigest: true,
-    soundNotifications: true
-  })
+    soundNotifications: true,
+  });
 
   // Appearance Settings State
   const [appearanceSettings, setAppearanceSettings] = useState({
-    theme: 'system',
-    language: 'en',
-    fontSize: 'medium',
+    theme: "system",
+    language: "en",
+    fontSize: "medium",
     compactMode: false,
     animations: true,
-    sidebarCollapsed: false
-  })
+    sidebarCollapsed: false,
+  });
 
   // Resume Preferences State
   const [resumePreferences, setResumePreferences] = useState({
-    defaultTemplate: 'modern-professional',
+    defaultTemplate: "modern-professional",
     autoSave: true,
     spellCheck: true,
-    exportFormat: 'pdf',
+    exportFormat: "pdf",
     watermark: false,
-    maxFileSize: '10mb'
-  })
+    maxFileSize: "10mb",
+  });
 
   // Handle form changes
-  const handleProfileChange = (field: keyof DocumentData, value: any) => {
-    setProfileData((prev: DocumentData | null) => ({ ...(prev || {}), [field]: value }));
+  const handleProfileChange = (field: string, value: string) => {
+    setProfileData((prev) => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
   };
 
   const handlePrivacyChange = (field: string, value: any) => {
     setPrivacySettings((prev) => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
-  }
+  };
 
   const handleNotificationChange = (field: string, value: any) => {
     setNotificationSettings((prev) => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
-  }
+  };
 
   const handleAppearanceChange = (field: string, value: any) => {
     setAppearanceSettings((prev) => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
-  }
+  };
 
   const handleResumeChange = (field: string, value: any) => {
     setResumePreferences((prev) => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
-  }
+  };
 
   // Save settings
   const handleSaveSettings = async () => {
-    setIsLoading(true)
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      toast.success('Settings saved successfully!')
-      setHasUnsavedChanges(false)
-      setShowSaveDialog(false)
-    } catch (error) {
-      toast.error('Failed to save settings. Please try again.')
-    } finally {
-      setIsLoading(false)
+    if (!user) {
+      toast.error("User not authenticated");
+      return;
     }
-  }
+
+    setIsLoading(true);
+    try {
+      // Update Firebase Auth profile (name and email)
+      await updateProfile(user, {
+        displayName: profileData.name,
+      });
+
+      // Note: Email update requires re-authentication in Firebase
+      // For now, we'll show a message if email was changed
+      if (profileData.email !== user.email) {
+        toast.error(
+          "Email changes require re-authentication. Please contact support."
+        );
+      }
+
+      // Save other profile data to cookies
+      const cookieData: UserProfileCookies = {
+        phone: profileData.phone,
+        location: profileData.location,
+        bio: profileData.bio,
+        website: profileData.website,
+        linkedin: profileData.linkedin,
+        twitter: profileData.twitter,
+      };
+
+      saveUserProfileToCookies(cookieData);
+
+      toast.success("Profile settings saved successfully!");
+      setHasUnsavedChanges(false);
+      setShowSaveDialog(false);
+    } catch (error) {
+      console.error("Error saving settings:", error);
+      toast.error("Failed to save settings. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Reset settings
   const handleResetSettings = () => {
-    setProfileData(mockUserData)
+    if (user) {
+      // Reset to Firebase Auth data and clear cookies
+      setProfileData({
+        name: user.displayName || "",
+        email: user.email || "",
+        phone: "",
+        location: "",
+        bio: "",
+        website: "",
+        linkedin: "",
+        twitter: "",
+      });
+
+      // Clear cookie data
+      saveUserProfileToCookies({});
+    }
     setPrivacySettings({
-      profileVisibility: 'public',
+      profileVisibility: "public",
       showEmail: true,
       showPhone: false,
       showLocation: true,
       allowMessaging: true,
       dataCollection: true,
-      analyticsTracking: true
-    })
+      analyticsTracking: true,
+    });
     setNotificationSettings({
       emailNotifications: true,
       pushNotifications: true,
@@ -311,27 +370,27 @@ export default function SettingsPage() {
       marketingEmails: false,
       securityAlerts: true,
       weeklyDigest: true,
-      soundNotifications: true
-    })
+      soundNotifications: true,
+    });
     setAppearanceSettings({
-      theme: 'system',
-      language: 'en',
-      fontSize: 'medium',
+      theme: "system",
+      language: "en",
+      fontSize: "medium",
       compactMode: false,
       animations: true,
-      sidebarCollapsed: false
-    })
+      sidebarCollapsed: false,
+    });
     setResumePreferences({
-      defaultTemplate: 'modern-professional',
+      defaultTemplate: "modern-professional",
       autoSave: true,
       spellCheck: true,
-      exportFormat: 'pdf',
+      exportFormat: "pdf",
       watermark: false,
-      maxFileSize: '10mb'
-    })
-    setHasUnsavedChanges(false)
-    toast.success('Settings reset to defaults')
-  }
+      maxFileSize: "10mb",
+    });
+    setHasUnsavedChanges(false);
+    toast.success("Settings reset to defaults");
+  };
 
   const renderProfileSection = () => (
     <motion.div
@@ -358,23 +417,23 @@ export default function SettingsPage() {
 
         <div className="flex-1">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-            {profileData?.name}
+            {profileData.name || "No Name Set"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            {profileData?.bio}
+            {profileData.bio || "No bio added yet"}
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              <span>{profileData?.email}</span>
+              <span>{profileData.email || "No email"}</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              <span>{profileData?.phone}</span>
+              <span>{profileData.phone || "No phone"}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              <span>{profileData?.location}</span>
+              <span>{profileData.location || "No location"}</span>
             </div>
           </div>
         </div>
@@ -394,9 +453,10 @@ export default function SettingsPage() {
             </label>
             <input
               type="text"
-              value={profileData?.name || ''}
-              onChange={(e) => handleProfileChange('name', e.target.value)}
+              value={profileData.name || ""}
+              onChange={(e) => handleProfileChange("name", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
+              placeholder="Enter your full name"
             />
           </div>
 
@@ -406,10 +466,14 @@ export default function SettingsPage() {
             </label>
             <input
               type="email"
-              value={profileData?.email || ''}
-              onChange={(e) => handleProfileChange('email', e.target.value)}
+              value={profileData.email || ""}
+              onChange={(e) => handleProfileChange("email", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
+              placeholder="Enter your email address"
             />
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Note: Email changes require re-authentication
+            </p>
           </div>
 
           <div>
@@ -418,9 +482,10 @@ export default function SettingsPage() {
             </label>
             <input
               type="tel"
-              value={profileData?.phone || ''}
-              onChange={(e) => handleProfileChange('phone', e.target.value)}
+              value={profileData.phone || ""}
+              onChange={(e) => handleProfileChange("phone", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
+              placeholder="Enter your phone number"
             />
           </div>
 
@@ -430,9 +495,10 @@ export default function SettingsPage() {
             </label>
             <input
               type="text"
-              value={profileData?.location || ''}
-              onChange={(e) => handleProfileChange('location', e.target.value)}
+              value={profileData.location || ""}
+              onChange={(e) => handleProfileChange("location", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
+              placeholder="Enter your location"
             />
           </div>
         </div>
@@ -442,12 +508,29 @@ export default function SettingsPage() {
             Bio
           </label>
           <textarea
-            value={profileData?.bio || ''}
-            onChange={(e) => handleProfileChange('bio', e.target.value)}
+            value={profileData.bio || ""}
+            onChange={(e) => handleProfileChange("bio", e.target.value)}
             rows={4}
             className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300 resize-none"
             placeholder="Tell us about yourself..."
           />
+        </div>
+
+        {/* Data Storage Information */}
+        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 rounded-2xl">
+          <div className="flex items-start gap-3">
+            <Database className="w-5 h-5 text-blue-600 mt-0.5" />
+            <div>
+              <h4 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1">
+                Data Storage Information
+              </h4>
+              <p className="text-xs text-blue-700 dark:text-blue-300">
+                <strong>Firebase Auth:</strong> Name & Email (secure) •
+                <strong>Browser Cookies:</strong> Phone, Location, Bio & Social
+                Links (1 year)
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -465,8 +548,8 @@ export default function SettingsPage() {
             </label>
             <input
               type="url"
-              value={profileData?.website || ''}
-              onChange={(e) => handleProfileChange('website', e.target.value)}
+              value={profileData.website || ""}
+              onChange={(e) => handleProfileChange("website", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               placeholder="https://yourwebsite.com"
             />
@@ -478,8 +561,8 @@ export default function SettingsPage() {
             </label>
             <input
               type="url"
-              value={profileData?.linkedin || ''}
-              onChange={(e) => handleProfileChange('linkedin', e.target.value)}
+              value={profileData.linkedin || ""}
+              onChange={(e) => handleProfileChange("linkedin", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               placeholder="https://linkedin.com/in/yourprofile"
             />
@@ -491,8 +574,8 @@ export default function SettingsPage() {
             </label>
             <input
               type="text"
-              value={profileData?.twitter || ''}
-              onChange={(e) => handleProfileChange('twitter', e.target.value)}
+              value={profileData.twitter || ""}
+              onChange={(e) => handleProfileChange("twitter", e.target.value)}
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               placeholder="@yourhandle"
             />
@@ -500,7 +583,7 @@ export default function SettingsPage() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderPrivacySection = () => (
     <motion.div
@@ -522,7 +605,9 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Lock className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Data Protected</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Data Protected
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Your personal information is encrypted and secure
             </p>
@@ -532,7 +617,9 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Eye className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Profile Visibility</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Profile Visibility
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Control who can see your profile and resume
             </p>
@@ -542,7 +629,9 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Mail className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Communication</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Communication
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Manage how recruiters can contact you
             </p>
@@ -556,11 +645,17 @@ export default function SettingsPage() {
             </label>
             <select
               value={privacySettings.profileVisibility}
-              onChange={(e) => handlePrivacyChange('profileVisibility', e.target.value)}
+              onChange={(e) =>
+                handlePrivacyChange("profileVisibility", e.target.value)
+              }
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             >
-              <option value="public">Public - Anyone can view my profile</option>
-              <option value="private">Private - Only recruiters can view</option>
+              <option value="public">
+                Public - Anyone can view my profile
+              </option>
+              <option value="private">
+                Private - Only recruiters can view
+              </option>
               <option value="hidden">Hidden - Profile is not visible</option>
             </select>
           </div>
@@ -568,14 +663,20 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
               <div>
-                <h4 className="font-medium text-gray-800 dark:text-white">Show Email Address</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Display your email on your public profile</p>
+                <h4 className="font-medium text-gray-800 dark:text-white">
+                  Show Email Address
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Display your email on your public profile
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacySettings.showEmail}
-                  onChange={(e) => handlePrivacyChange('showEmail', e.target.checked)}
+                  onChange={(e) =>
+                    handlePrivacyChange("showEmail", e.target.checked)
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -584,14 +685,20 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
               <div>
-                <h4 className="font-medium text-gray-800 dark:text-white">Show Phone Number</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Display your phone number on your profile</p>
+                <h4 className="font-medium text-gray-800 dark:text-white">
+                  Show Phone Number
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Display your phone number on your profile
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacySettings.showPhone}
-                  onChange={(e) => handlePrivacyChange('showPhone', e.target.checked)}
+                  onChange={(e) =>
+                    handlePrivacyChange("showPhone", e.target.checked)
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -600,14 +707,20 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
               <div>
-                <h4 className="font-medium text-gray-800 dark:text-white">Allow Direct Messages</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Let recruiters send you direct messages</p>
+                <h4 className="font-medium text-gray-800 dark:text-white">
+                  Allow Direct Messages
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Let recruiters send you direct messages
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacySettings.allowMessaging}
-                  onChange={(e) => handlePrivacyChange('allowMessaging', e.target.checked)}
+                  onChange={(e) =>
+                    handlePrivacyChange("allowMessaging", e.target.checked)
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -631,7 +744,7 @@ export default function SettingsPage() {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter current password"
                 className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
               />
@@ -639,7 +752,11 @@ export default function SettingsPage() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -665,7 +782,7 @@ export default function SettingsPage() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderNotificationsSection = () => (
     <motion.div
@@ -693,14 +810,23 @@ export default function SettingsPage() {
             <div className="space-y-4 ml-7">
               <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
                 <div>
-                  <h5 className="font-medium text-gray-800 dark:text-white">Resume Updates</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Get notified when your resume is viewed or downloaded</p>
+                  <h5 className="font-medium text-gray-800 dark:text-white">
+                    Resume Updates
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Get notified when your resume is viewed or downloaded
+                  </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={notificationSettings.resumeUpdates}
-                    onChange={(e) => handleNotificationChange('resumeUpdates', e.target.checked)}
+                    onChange={(e) =>
+                      handleNotificationChange(
+                        "resumeUpdates",
+                        e.target.checked
+                      )
+                    }
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -709,14 +835,20 @@ export default function SettingsPage() {
 
               <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
                 <div>
-                  <h5 className="font-medium text-gray-800 dark:text-white">Job Alerts</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Receive notifications about new job opportunities</p>
+                  <h5 className="font-medium text-gray-800 dark:text-white">
+                    Job Alerts
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Receive notifications about new job opportunities
+                  </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={notificationSettings.jobAlerts}
-                    onChange={(e) => handleNotificationChange('jobAlerts', e.target.checked)}
+                    onChange={(e) =>
+                      handleNotificationChange("jobAlerts", e.target.checked)
+                    }
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -725,14 +857,23 @@ export default function SettingsPage() {
 
               <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
                 <div>
-                  <h5 className="font-medium text-gray-800 dark:text-white">Security Alerts</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Important security notifications and account changes</p>
+                  <h5 className="font-medium text-gray-800 dark:text-white">
+                    Security Alerts
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Important security notifications and account changes
+                  </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={notificationSettings.securityAlerts}
-                    onChange={(e) => handleNotificationChange('securityAlerts', e.target.checked)}
+                    onChange={(e) =>
+                      handleNotificationChange(
+                        "securityAlerts",
+                        e.target.checked
+                      )
+                    }
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -741,14 +882,20 @@ export default function SettingsPage() {
 
               <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
                 <div>
-                  <h5 className="font-medium text-gray-800 dark:text-white">Weekly Digest</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Weekly summary of your account activity</p>
+                  <h5 className="font-medium text-gray-800 dark:text-white">
+                    Weekly Digest
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Weekly summary of your account activity
+                  </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={notificationSettings.weeklyDigest}
-                    onChange={(e) => handleNotificationChange('weeklyDigest', e.target.checked)}
+                    onChange={(e) =>
+                      handleNotificationChange("weeklyDigest", e.target.checked)
+                    }
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -767,14 +914,23 @@ export default function SettingsPage() {
             <div className="space-y-4 ml-7">
               <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
                 <div>
-                  <h5 className="font-medium text-gray-800 dark:text-white">Enable Push Notifications</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Receive instant notifications in your browser</p>
+                  <h5 className="font-medium text-gray-800 dark:text-white">
+                    Enable Push Notifications
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Receive instant notifications in your browser
+                  </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={notificationSettings.pushNotifications}
-                    onChange={(e) => handleNotificationChange('pushNotifications', e.target.checked)}
+                    onChange={(e) =>
+                      handleNotificationChange(
+                        "pushNotifications",
+                        e.target.checked
+                      )
+                    }
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -783,14 +939,23 @@ export default function SettingsPage() {
 
               <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
                 <div>
-                  <h5 className="font-medium text-gray-800 dark:text-white">Sound Notifications</h5>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Play sound for important notifications</p>
+                  <h5 className="font-medium text-gray-800 dark:text-white">
+                    Sound Notifications
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Play sound for important notifications
+                  </p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={notificationSettings.soundNotifications}
-                    onChange={(e) => handleNotificationChange('soundNotifications', e.target.checked)}
+                    onChange={(e) =>
+                      handleNotificationChange(
+                        "soundNotifications",
+                        e.target.checked
+                      )
+                    }
                     className="sr-only peer"
                   />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -808,24 +973,33 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl ml-7">
               <div>
-                <h5 className="font-medium text-gray-800 dark:text-white">Marketing Emails</h5>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Receive updates about new features and offers</p>
+                <h5 className="font-medium text-gray-800 dark:text-white">
+                  Marketing Emails
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Receive updates about new features and offers
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={notificationSettings.marketingEmails}
-                  onChange={(e) => handleNotificationChange('marketingEmails', e.target.checked)}
+                  onChange={(e) =>
+                    handleNotificationChange(
+                      "marketingEmails",
+                      e.target.checked
+                    )
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                </label>
+              </label>
             </div>
           </div>
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderAppearanceSection = () => (
     <motion.div
@@ -850,27 +1024,50 @@ export default function SettingsPage() {
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                { value: 'light', label: 'Light', icon: Sun, desc: 'Always use light theme' },
-                { value: 'dark', label: 'Dark', icon: Moon, desc: 'Always use dark theme' },
-                { value: 'system', label: 'System', icon: Monitor, desc: 'Follow system preference' }
+                {
+                  value: "light",
+                  label: "Light",
+                  icon: Sun,
+                  desc: "Always use light theme",
+                },
+                {
+                  value: "dark",
+                  label: "Dark",
+                  icon: Moon,
+                  desc: "Always use dark theme",
+                },
+                {
+                  value: "system",
+                  label: "System",
+                  icon: Monitor,
+                  desc: "Follow system preference",
+                },
               ].map(({ value, label, icon: Icon, desc }) => (
                 <motion.div
                   key={value}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => handleAppearanceChange('theme', value)}
+                  onClick={() => handleAppearanceChange("theme", value)}
                   className={`p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${
                     appearanceSettings.theme === value
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                      : 'border-gray-200 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-600/50'
+                      ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20"
+                      : "border-gray-200 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-600/50"
                   }`}
                 >
                   <div className="flex flex-col items-center text-center">
-                    <Icon className={`w-8 h-8 mb-3 ${
-                      appearanceSettings.theme === value ? 'text-purple-600' : 'text-gray-500'
-                    }`} />
-                    <h4 className="font-semibold text-gray-800 dark:text-white mb-2">{label}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{desc}</p>
+                    <Icon
+                      className={`w-8 h-8 mb-3 ${
+                        appearanceSettings.theme === value
+                          ? "text-purple-600"
+                          : "text-gray-500"
+                      }`}
+                    />
+                    <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+                      {label}
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {desc}
+                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -884,7 +1081,9 @@ export default function SettingsPage() {
             </label>
             <select
               value={appearanceSettings.language}
-              onChange={(e) => handleAppearanceChange('language', e.target.value)}
+              onChange={(e) =>
+                handleAppearanceChange("language", e.target.value)
+              }
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             >
               <option value="en">English</option>
@@ -906,7 +1105,9 @@ export default function SettingsPage() {
             </label>
             <select
               value={appearanceSettings.fontSize}
-              onChange={(e) => handleAppearanceChange('fontSize', e.target.value)}
+              onChange={(e) =>
+                handleAppearanceChange("fontSize", e.target.value)
+              }
               className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             >
               <option value="small">Small</option>
@@ -920,14 +1121,20 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
               <div>
-                <h4 className="font-medium text-gray-800 dark:text-white">Compact Mode</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Use smaller spacing and components</p>
+                <h4 className="font-medium text-gray-800 dark:text-white">
+                  Compact Mode
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Use smaller spacing and components
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={appearanceSettings.compactMode}
-                  onChange={(e) => handleAppearanceChange('compactMode', e.target.checked)}
+                  onChange={(e) =>
+                    handleAppearanceChange("compactMode", e.target.checked)
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -936,14 +1143,20 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
               <div>
-                <h4 className="font-medium text-gray-800 dark:text-white">Animations</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Enable smooth animations and transitions</p>
+                <h4 className="font-medium text-gray-800 dark:text-white">
+                  Animations
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Enable smooth animations and transitions
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={appearanceSettings.animations}
-                  onChange={(e) => handleAppearanceChange('animations', e.target.checked)}
+                  onChange={(e) =>
+                    handleAppearanceChange("animations", e.target.checked)
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -952,14 +1165,20 @@ export default function SettingsPage() {
 
             <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
               <div>
-                <h4 className="font-medium text-gray-800 dark:text-white">Sidebar Collapsed</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Keep the sidebar collapsed by default</p>
+                <h4 className="font-medium text-gray-800 dark:text-white">
+                  Sidebar Collapsed
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Keep the sidebar collapsed by default
+                </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={appearanceSettings.sidebarCollapsed}
-                  onChange={(e) => handleAppearanceChange('sidebarCollapsed', e.target.checked)}
+                  onChange={(e) =>
+                    handleAppearanceChange("sidebarCollapsed", e.target.checked)
+                  }
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -969,7 +1188,7 @@ export default function SettingsPage() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderResumeSection = () => (
     <motion.div
@@ -991,13 +1210,17 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center mb-4">
               <FileText className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Default Template</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Default Template
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Choose your preferred template for new resumes
             </p>
             <select
               value={resumePreferences.defaultTemplate}
-              onChange={(e) => handleResumeChange('defaultTemplate', e.target.value)}
+              onChange={(e) =>
+                handleResumeChange("defaultTemplate", e.target.value)
+              }
               className="w-full px-3 py-2 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
             >
               <option value="modern-professional">Modern Professional</option>
@@ -1012,13 +1235,17 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-4">
               <Download className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Export Format</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Export Format
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Default format for resume downloads
             </p>
             <select
               value={resumePreferences.exportFormat}
-              onChange={(e) => handleResumeChange('exportFormat', e.target.value)}
+              onChange={(e) =>
+                handleResumeChange("exportFormat", e.target.value)
+              }
               className="w-full px-3 py-2 bg-white/50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
             >
               <option value="pdf">PDF Document</option>
@@ -1031,14 +1258,20 @@ export default function SettingsPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
             <div>
-              <h4 className="font-medium text-gray-800 dark:text-white">Auto-Save</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Automatically save your work as you type</p>
+              <h4 className="font-medium text-gray-800 dark:text-white">
+                Auto-Save
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Automatically save your work as you type
+              </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 checked={resumePreferences.autoSave}
-                onChange={(e) => handleResumeChange('autoSave', e.target.checked)}
+                onChange={(e) =>
+                  handleResumeChange("autoSave", e.target.checked)
+                }
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -1047,14 +1280,20 @@ export default function SettingsPage() {
 
           <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
             <div>
-              <h4 className="font-medium text-gray-800 dark:text-white">Spell Check</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Enable automatic spell checking</p>
+              <h4 className="font-medium text-gray-800 dark:text-white">
+                Spell Check
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Enable automatic spell checking
+              </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 checked={resumePreferences.spellCheck}
-                onChange={(e) => handleResumeChange('spellCheck', e.target.checked)}
+                onChange={(e) =>
+                  handleResumeChange("spellCheck", e.target.checked)
+                }
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -1063,14 +1302,20 @@ export default function SettingsPage() {
 
           <div className="flex items-center justify-between p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
             <div>
-              <h4 className="font-medium text-gray-800 dark:text-white">Watermark</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Add watermark to exported resumes</p>
+              <h4 className="font-medium text-gray-800 dark:text-white">
+                Watermark
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Add watermark to exported resumes
+              </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 checked={resumePreferences.watermark}
-                onChange={(e) => handleResumeChange('watermark', e.target.checked)}
+                onChange={(e) =>
+                  handleResumeChange("watermark", e.target.checked)
+                }
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -1079,7 +1324,7 @@ export default function SettingsPage() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderBillingSection = () => (
     <motion.div
@@ -1101,16 +1346,22 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-green-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Crown className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Current Plan</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Current Plan
+            </h4>
             <p className="text-2xl font-bold text-teal-600 mb-2">Pro</p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">$29/month</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              $29/month
+            </p>
           </div>
 
           <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-200 dark:border-blue-800/30">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Calendar className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Next Billing</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Next Billing
+            </h4>
             <p className="text-2xl font-bold text-blue-600 mb-2">Dec 15</p>
             <p className="text-sm text-gray-600 dark:text-gray-400">2024</p>
           </div>
@@ -1119,7 +1370,9 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <FileText className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Usage</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Usage
+            </h4>
             <p className="text-2xl font-bold text-purple-600 mb-2">12/25</p>
             <p className="text-sm text-gray-600 dark:text-gray-400">Resumes</p>
           </div>
@@ -1156,9 +1409,24 @@ export default function SettingsPage() {
 
         <div className="space-y-4">
           {[
-            { date: 'Nov 15, 2024', amount: '$29.00', status: 'Paid', method: '**** 4242' },
-            { date: 'Oct 15, 2024', amount: '$29.00', status: 'Paid', method: '**** 4242' },
-            { date: 'Sep 15, 2024', amount: '$29.00', status: 'Paid', method: '**** 4242' },
+            {
+              date: "Nov 15, 2024",
+              amount: "$29.00",
+              status: "Paid",
+              method: "**** 4242",
+            },
+            {
+              date: "Oct 15, 2024",
+              amount: "$29.00",
+              status: "Paid",
+              method: "**** 4242",
+            },
+            {
+              date: "Sep 15, 2024",
+              amount: "$29.00",
+              status: "Paid",
+              method: "**** 4242",
+            },
           ].map((payment, index) => (
             <motion.div
               key={index}
@@ -1172,12 +1440,18 @@ export default function SettingsPage() {
                   <CreditCard className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-800 dark:text-white">{payment.date}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{payment.method}</p>
+                  <p className="font-medium text-gray-800 dark:text-white">
+                    {payment.date}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {payment.method}
+                  </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-bold text-gray-800 dark:text-white">{payment.amount}</p>
+                <p className="font-bold text-gray-800 dark:text-white">
+                  {payment.amount}
+                </p>
                 <p className="text-sm text-green-600">{payment.status}</p>
               </div>
             </motion.div>
@@ -1185,7 +1459,7 @@ export default function SettingsPage() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderDataSection = () => (
     <motion.div
@@ -1207,7 +1481,9 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-pink-500 rounded-xl flex items-center justify-center mb-4">
               <Download className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Export Data</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Export Data
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Download all your data including resumes, settings, and activity
             </p>
@@ -1225,7 +1501,9 @@ export default function SettingsPage() {
             <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-4">
               <Upload className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Import Data</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+              Import Data
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Import resumes and data from other platforms or backups
             </p>
@@ -1243,20 +1521,36 @@ export default function SettingsPage() {
         {/* Data Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
-            <div className="text-2xl font-bold text-gray-800 dark:text-white">{profileData?.resumeCount}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Resumes</div>
+            <div className="text-2xl font-bold text-gray-800 dark:text-white">
+              12
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Resumes
+            </div>
           </div>
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
-            <div className="text-2xl font-bold text-gray-800 dark:text-white">{profileData?.profileViews}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Profile Views</div>
+            <div className="text-2xl font-bold text-gray-800 dark:text-white">
+              156
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Profile Views
+            </div>
           </div>
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
-            <div className="text-2xl font-bold text-gray-800 dark:text-white">156MB</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Storage Used</div>
+            <div className="text-2xl font-bold text-gray-800 dark:text-white">
+              156MB
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Storage Used
+            </div>
           </div>
           <div className="text-center p-4 bg-white/50 dark:bg-gray-700/50 rounded-2xl">
-            <div className="text-2xl font-bold text-gray-800 dark:text-white">2.1GB</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Available</div>
+            <div className="text-2xl font-bold text-gray-800 dark:text-white">
+              2.1GB
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Available
+            </div>
           </div>
         </div>
 
@@ -1270,8 +1564,12 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/20 rounded-2xl border border-red-200 dark:border-red-800/30">
               <div>
-                <h5 className="font-medium text-red-800 dark:text-red-200">Delete Account</h5>
-                <p className="text-sm text-red-600 dark:text-red-400">Permanently delete your account and all data</p>
+                <h5 className="font-medium text-red-800 dark:text-red-200">
+                  Delete Account
+                </h5>
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  Permanently delete your account and all data
+                </p>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -1286,7 +1584,7 @@ export default function SettingsPage() {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   return (
     <PageWrapper isLoading={false} loadingType="general">
@@ -1329,10 +1627,7 @@ export default function SettingsPage() {
               className="max-w-7xl mx-auto"
             >
               {/* Enhanced Header Section */}
-              <motion.div
-                variants={itemVariants}
-                className="mb-12"
-              >
+              <motion.div variants={itemVariants} className="mb-12">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                   {/* Title Section */}
                   <div>
@@ -1354,8 +1649,9 @@ export default function SettingsPage() {
                     </h1>
 
                     <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
-                      Manage your account settings, privacy preferences, and customize your dashboard
-                      to work exactly how you want it to.
+                      Manage your account settings, privacy preferences, and
+                      customize your dashboard to work exactly how you want it
+                      to.
                     </p>
                   </div>
 
@@ -1378,12 +1674,12 @@ export default function SettingsPage() {
                       disabled={!hasUnsavedChanges}
                       className={`px-8 py-3 font-bold rounded-2xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                         hasUnsavedChanges
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-purple-500/25 hover:shadow-purple-500/40'
-                          : 'bg-gray-300 dark:bg-gray-600 text-gray-500 cursor-not-allowed'
+                          ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-purple-500/25 hover:shadow-purple-500/40"
+                          : "bg-gray-300 dark:bg-gray-600 text-gray-500 cursor-not-allowed"
                       }`}
                     >
                       <Save className="w-4 h-4" />
-                      {isLoading ? 'Saving...' : 'Save Changes'}
+                      {isLoading ? "Saving..." : "Save Changes"}
                     </motion.button>
                   </div>
                 </div>
@@ -1397,17 +1693,15 @@ export default function SettingsPage() {
                   >
                     <AlertTriangle className="w-5 h-5 text-yellow-600" />
                     <p className="text-yellow-800 dark:text-yellow-200">
-                      You have unsaved changes. Don't forget to save your settings!
+                      You have unsaved changes. Don't forget to save your
+                      settings!
                     </p>
                   </motion.div>
                 )}
               </motion.div>
 
               {/* Settings Navigation */}
-              <motion.div
-                variants={itemVariants}
-                className="mb-8"
-              >
+              <motion.div variants={itemVariants} className="mb-8">
                 <div className="flex flex-wrap gap-2 p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/20">
                   {settingsSections.map((section) => (
                     <motion.button
@@ -1418,18 +1712,22 @@ export default function SettingsPage() {
                       className={`flex-1 min-w-[200px] p-4 rounded-2xl transition-all duration-300 ${
                         activeSection === section.id
                           ? `bg-gradient-to-r ${section.color} text-white shadow-lg`
-                          : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                          : "text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50"
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <section.icon className="w-5 h-5" />
                         <div className="text-left">
-                          <div className="font-semibold text-sm">{section.title}</div>
-                          <div className={`text-xs mt-1 ${
-                            activeSection === section.id
-                              ? 'text-white/80'
-                              : 'text-gray-500 dark:text-gray-500'
-                          }`}>
+                          <div className="font-semibold text-sm">
+                            {section.title}
+                          </div>
+                          <div
+                            className={`text-xs mt-1 ${
+                              activeSection === section.id
+                                ? "text-white/80"
+                                : "text-gray-500 dark:text-gray-500"
+                            }`}
+                          >
                             {section.description}
                           </div>
                         </div>
@@ -1442,25 +1740,26 @@ export default function SettingsPage() {
               {/* Settings Content */}
               <div className="relative">
                 {/* Profile Section */}
-                {activeSection === 'profile' && renderProfileSection()}
+                {activeSection === "profile" && renderProfileSection()}
 
                 {/* Privacy Section */}
-                {activeSection === 'privacy' && renderPrivacySection()}
+                {activeSection === "privacy" && renderPrivacySection()}
 
                 {/* Notifications Section */}
-                {activeSection === 'notifications' && renderNotificationsSection()}
+                {activeSection === "notifications" &&
+                  renderNotificationsSection()}
 
                 {/* Appearance Section */}
-                {activeSection === 'appearance' && renderAppearanceSection()}
+                {activeSection === "appearance" && renderAppearanceSection()}
 
                 {/* Resume Section */}
-                {activeSection === 'resume' && renderResumeSection()}
+                {activeSection === "resume" && renderResumeSection()}
 
                 {/* Billing Section */}
-                {activeSection === 'billing' && renderBillingSection()}
+                {activeSection === "billing" && renderBillingSection()}
 
                 {/* Data Section */}
-                {activeSection === 'data' && renderDataSection()}
+                {activeSection === "data" && renderDataSection()}
               </div>
 
               {/* Enhanced CTA Section */}
@@ -1497,7 +1796,9 @@ export default function SettingsPage() {
                     >
                       <Sparkles className="w-5 h-5 text-white" />
                     </motion.div>
-                    <span className="text-white font-bold">Need Help with Settings?</span>
+                    <span className="text-white font-bold">
+                      Need Help with Settings?
+                    </span>
                   </motion.div>
 
                   <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
@@ -1510,8 +1811,9 @@ export default function SettingsPage() {
                   </h2>
 
                   <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12">
-                    Our support team is here to help you configure your account perfectly.
-                    Get personalized assistance with any setting or feature.
+                    Our support team is here to help you configure your account
+                    perfectly. Get personalized assistance with any setting or
+                    feature.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -1542,5 +1844,5 @@ export default function SettingsPage() {
         </main>
       </div>
     </PageWrapper>
-  )
+  );
 }
