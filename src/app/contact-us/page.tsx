@@ -1,9 +1,14 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, Users, Star, CheckCircle, XCircle } from 'lucide-react'
+import emailjs from '@emailjs/browser'
+
+// Initialize EmailJS with your public key
+emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "");
 
 const ContactUsPage = () => {
+  const formRef = useRef<HTMLFormElement>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,11 +19,14 @@ const ContactUsPage = () => {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const fieldName = e.target.name === 'user_name' ? 'name' : 
+                     e.target.name === 'user_email' ? 'email' : 
+                     e.target.name
+    setFormData({ ...formData, [fieldName]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -30,12 +38,28 @@ const ContactUsPage = () => {
       return
     }
 
-    // Simulate form submission
+    // EmailJS configuration
+    // TEMPORARY: Hardcoded values for testing - REMOVE AFTER TESTING
+    // Replace these with your actual EmailJS service ID, template ID, and public key from your dashboard
+    const serviceId = 'service_mtgmf8q'; // Replace with your actual service ID
+    const templateId = 'template_lmemsps'; // Replace with your actual template ID
+    const publicKey = '8S0l_ZVruyeF0gYO8'; // Replace with your actual public key
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API call
+      // Send email using EmailJS
+      if (formRef.current) {
+        await emailjs.sendForm(
+          serviceId,
+          templateId,
+          formRef.current,
+          publicKey
+        )
+      }
+      
       setSubmitted(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
+      console.error('Failed to send email:', err)
       setError('Failed to send message. Please try again.')
     } finally {
       setLoading(false)
@@ -217,7 +241,7 @@ const ContactUsPage = () => {
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   {error && (
                     <motion.div
                       initial={{ x: -20, opacity: 0 }}
@@ -239,7 +263,7 @@ const ContactUsPage = () => {
                       </label>
                       <input
                         type="text"
-                        name="name"
+                        name="user_name" // EmailJS template parameter
                         value={formData.name}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 dark:bg-gray-700 dark:text-white transition-all duration-300"
@@ -256,7 +280,7 @@ const ContactUsPage = () => {
                       </label>
                       <input
                         type="email"
-                        name="email"
+                        name="user_email" // EmailJS template parameter
                         value={formData.email}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 dark:bg-gray-700 dark:text-white transition-all duration-300"
@@ -274,7 +298,7 @@ const ContactUsPage = () => {
                     </label>
                     <input
                       type="text"
-                      name="subject"
+                      name="subject" // EmailJS template parameter
                       value={formData.subject}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 dark:bg-gray-700 dark:text-white transition-all duration-300"
@@ -290,7 +314,7 @@ const ContactUsPage = () => {
                       Message *
                     </label>
                     <textarea
-                      name="message"
+                      name="message" // EmailJS template parameter
                       value={formData.message}
                       onChange={handleInputChange}
                       rows={6}
