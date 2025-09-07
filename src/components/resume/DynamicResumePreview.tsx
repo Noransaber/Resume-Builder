@@ -1,6 +1,6 @@
 "use client"
 import { motion } from 'framer-motion'
-import { Template, TemplateData } from '../../templates'
+import { Template, TemplateData } from '@/templates'
 
 interface DynamicResumePreviewProps {
   data: TemplateData

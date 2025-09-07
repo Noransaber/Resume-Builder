@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Sun, Moon, Menu, X, Sparkles, FileText, Users, BarChart3, Heart } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAuthState } from "react-firebase-hooks/auth"
-import { auth } from "@/lib/firebase"
+import { useAuthStore } from "@/stores/authStore"
 
 
 export function Header() {
@@ -14,8 +13,12 @@ export function Header() {
   const { i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  // Firebase auth state
-  const [user, loading] = useAuthState(auth)
+  // Auth state from Zustand store
+  const { user, loading, init } = useAuthStore()
+  
+  useEffect(() => {
+    init()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {

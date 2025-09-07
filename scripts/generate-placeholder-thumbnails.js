@@ -47,6 +47,76 @@ const templates = [
     color: '#c10b41',
     bgColor: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
     accent: '#dc2626'
+  },
+  {
+    id: 'corporate-executive',
+    name: 'Corporate Executive',
+    color: '#0f172a',
+    bgColor: '#ffffff',
+    accent: '#f1f5f9'
+  },
+  {
+    id: 'designer-showcase',
+    name: 'Designer Showcase',
+    color: '#8b5cf6',
+    bgColor: 'linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%)',
+    accent: '#a78bfa'
+  },
+  {
+    id: 'startup-founder',
+    name: 'Startup Founder',
+    color: '#2563eb',
+    bgColor: '#ffffff',
+    accent: '#dbeafe'
+  },
+  {
+    id: 'academic-scholar',
+    name: 'Academic Scholar',
+    color: '#4b5563',
+    bgColor: '#ffffff',
+    accent: '#f3f4f6'
+  },
+  {
+    id: 'healthcare-professional',
+    name: 'Healthcare Professional',
+    color: '#0ea5e9',
+    bgColor: '#ffffff',
+    accent: '#e0f2fe'
+  },
+  {
+    id: 'sales-professional',
+    name: 'Sales Professional',
+    color: '#f59e0b',
+    bgColor: '#ffffff',
+    accent: '#fef3c7'
+  },
+  {
+    id: 'student-fresh',
+    name: 'Student Fresh',
+    color: '#10b981',
+    bgColor: '#ffffff',
+    accent: '#d1fae5'
+  },
+  {
+    id: 'freelancer',
+    name: 'Freelancer',
+    color: '#8b5cf6',
+    bgColor: '#ffffff',
+    accent: '#ede9fe'
+  },
+  {
+    id: 'digital-nomad',
+    name: 'Digital Nomad',
+    color: '#06b6d4',
+    bgColor: 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)',
+    accent: '#14b8a6'
+  },
+  {
+    id: 'modern-professional',
+    name: 'Modern Professional',
+    color: '#c10b41',
+    bgColor: '#ffffff',
+    accent: '#f8fafc'
   }
 ]
 

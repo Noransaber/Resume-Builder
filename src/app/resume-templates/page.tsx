@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import {
   ArrowRight,
@@ -22,10 +23,13 @@ import {
   Crown,
   Flame,
   Rocket,
-  Globe
+  Globe,
+  Loader2
 } from 'lucide-react'
-import { templates, categories } from '../../templates'
+import { templates, categories, Template } from '../../templates'
 import { PageWrapper } from '@/components/ui/PageLoader'
+import { TemplateSelectionModal } from '@/components/templates/TemplateSelectionModal'
+import { TemplatePreviewModal } from '@/components/templates/TemplatePreviewModal'
 
 // Convert template data to match the expected format
 const resumeTemplates = templates.map(template => ({
@@ -87,9 +91,11 @@ const cardHoverVariants = {
 }
 
 export default function ResumeTemplatesPage() {
+  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+  const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(null)
 
   // Filter templates based on active category and search
   const filteredTemplates = useMemo(() => {
@@ -114,6 +120,16 @@ export default function ResumeTemplatesPage() {
 
   const featuredTemplates = resumeTemplates.filter(t => t.featured)
   const popularTemplates = resumeTemplates.filter(t => t.popular)
+
+  // Handle template selection with loading state
+  const handleTemplateSelect = (templateId: string) => {
+    setLoadingTemplateId(templateId)
+    
+    // Add a brief delay to show loading state
+    setTimeout(() => {
+      router.push(`/resume/builder/${templateId}`)
+    }, 500)
+  }
 
   return (
     <PageWrapper isLoading={false} loadingType="general">
@@ -398,7 +414,9 @@ export default function ResumeTemplatesPage() {
                 className="grid gap-8 lg:grid-cols-3"
               >
                 {featuredTemplates.slice(0, 3).map((template, index) => (
-                  <Link href={`/resume/builder/${template.id}`} key={template.id} className="block">
+                <div key={template.id} className="block cursor-pointer" onClick={() => {
+                  handleTemplateSelect(template.id)
+                }}>
                     <motion.div
                       variants={{ ...itemVariants, ...cardHoverVariants }}
                       whileHover="hover"
@@ -430,14 +448,21 @@ export default function ResumeTemplatesPage() {
 
                         {/* Use Template Button */}
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                          <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
-                          >
-                            Use This Template
-                          </motion.div>
+                        <motion.div
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl flex items-center gap-2"
+                        >
+                          {loadingTemplateId === template.id ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              <span>Loading...</span>
+                            </>
+                          ) : (
+                            <span>Use Template #{template.id}</span>
+                          )}
+                        </motion.div>
                         </div>
                       </div>
 
@@ -476,7 +501,7 @@ export default function ResumeTemplatesPage() {
                         </div>
                       </div>
                     </motion.div>
-                  </Link>
+                  </div>
                 ))}
               </motion.div>
             </div>
@@ -512,7 +537,9 @@ export default function ResumeTemplatesPage() {
               className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
               {filteredTemplates.map((template, index) => (
-                <Link href={`/resume/builder/${template.id}`} key={template.id} className="block">
+                <div key={template.id} className="block cursor-pointer" onClick={() => {
+                  handleTemplateSelect(template.id)
+                }}>
                   <motion.div
                     variants={{ ...itemVariants, ...cardHoverVariants }}
                     whileHover="hover"
@@ -576,9 +603,16 @@ export default function ResumeTemplatesPage() {
                           initial={{ scale: 0.8, opacity: 0 }}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl"
+                          className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl flex items-center gap-2"
                         >
-                          Use This Template
+                          {loadingTemplateId === template.id ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              <span>Loading...</span>
+                            </>
+                          ) : (
+                            <span>Use Template #{template.id}</span>
+                          )}
                         </motion.div>
                       </div>
 
@@ -654,7 +688,7 @@ export default function ResumeTemplatesPage() {
                       </div>
                     </div>
                   </motion.div>
-                </Link>
+                </div>
               ))}
             </motion.div>
 
@@ -841,6 +875,8 @@ export default function ResumeTemplatesPage() {
           </motion.div>
         </section>
       </div>
+
+      {/* No modals needed anymore */}
     </PageWrapper>
   )
 }

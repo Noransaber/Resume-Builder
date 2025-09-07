@@ -522,3 +522,7 @@ interface Template {
 **Last Updated:** Current Date
 **Status:** Implementation in Progress
 **Next Review:** After Phase 1 completion
+/blog - Latest articles and insights
+/career-advice - Professional development guidance
+/cover-letters - Perfect application letters
+/interview-tips - Ace your next interview
