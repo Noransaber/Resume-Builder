@@ -1,0 +1,2 @@
+export { TechTemplate } from './TechTemplate'
+

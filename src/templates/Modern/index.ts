@@ -1,0 +1,2 @@
+export { ModernTemplate } from './ModernTemplate'
+

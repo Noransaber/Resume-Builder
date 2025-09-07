@@ -23,7 +23,7 @@ export function DynamicResumePreview({ data, template }: DynamicResumePreviewPro
     )
   }
 
-  // Dynamically render the selected template component
+  // Dynamically render the selected template component with configuration
   const TemplateComponent = template.component
 
   return (
@@ -33,7 +33,7 @@ export function DynamicResumePreview({ data, template }: DynamicResumePreviewPro
       transition={{ duration: 0.3 }}
       className="w-full"
     >
-      <TemplateComponent userData={data} />
+      <TemplateComponent userData={data} config={template.config} />
     </motion.div>
   )
 }

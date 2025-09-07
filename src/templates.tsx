@@ -1,7 +1,27 @@
 "use client"
 import React from 'react'
+import { 
+  initializeTemplateSystem, 
+  getAllTemplates, 
+  getTemplatesByCategory as getTemplatesByCat, 
+  templateCategories,
+  getTemplate,
+  TemplateData as NewTemplateData,
+  TemplateProps as NewTemplateProps,
+  Template as NewTemplate
+} from './templates/index'
 
-// Template interface for type safety
+// Initialize the template system
+try {
+  initializeTemplateSystem()
+} catch (error) {
+  console.warn('Template system initialization warning:', error)
+}
+
+// Re-export types for backwards compatibility
+export type { NewTemplateData, NewTemplateProps, NewTemplate }
+
+// Legacy interface for backwards compatibility
 export interface TemplateData {
   personal: {
     firstName: string
@@ -222,100 +242,35 @@ const MockTemplate: React.FC<TemplateProps> = ({ userData }) => {
   )
 }
 
-// Template registry with mock templates
-export const templates: Template[] = [
-  {
-    id: '1',
-    name: 'Modern Professional',
-    category: 'Professional',
-    component: MockTemplate,
-    thumbnail: '/images/thumbnails/modern-template-thumbnail.svg',
-    description: 'Clean and contemporary design perfect for modern professionals',
-    features: ['Clean layout', 'Modern typography', 'Professional styling', 'ATS optimized'],
-    atsOptimized: true,
-    popular: true,
-    featured: true
-  },
-  {
-    id: '2',
-    name: 'Classic Elegant',
-    category: 'Professional',
-    component: MockTemplate,
-    thumbnail: '/images/thumbnails/classic-template-thumbnail.svg',
-    description: 'Traditional, professional design with serif typography and conservative styling',
-    features: ['Traditional layout', 'Serif typography', 'Conservative styling', 'Professional appeal'],
-    atsOptimized: true,
-    popular: true,
-    featured: true
-  },
-  {
-    id: '3',
-    name: 'Creative Portfolio',
-    category: 'Creative',
-    component: MockTemplate,
-    thumbnail: '/images/thumbnails/creative-template-thumbnail.svg',
-    description: 'Bold and creative design perfect for designers and creative professionals',
-    features: ['Creative layout', 'Bold typography', 'Visual elements', 'Portfolio focused'],
-    atsOptimized: true,
-    popular: false,
-    featured: false
-  },
-  {
-    id: '4',
-    name: 'Minimalist Clean',
-    category: 'Professional',
-    component: MockTemplate,
-    thumbnail: '/images/thumbnails/minimal-template-thumbnail.svg',
-    description: 'Simple, clean design that focuses on content and readability',
-    features: ['Minimal design', 'Clean typography', 'Content focused', 'ATS optimized'],
-    atsOptimized: true,
-    popular: true,
-    featured: false
-  },
-  {
-    id: '5',
-    name: 'Tech Innovator',
-    category: 'Technology',
-    component: MockTemplate,
-    thumbnail: '/images/thumbnails/tech-template-thumbnail.svg',
-    description: 'Modern tech-focused design perfect for developers and IT professionals',
-    features: ['Tech styling', 'Code-friendly layout', 'Modern design', 'Developer focused'],
-    atsOptimized: true,
-    popular: false,
-    featured: true
-  },
-  {
-    id: '6',
-    name: 'Executive Suite',
-    category: 'Executive',
-    component: MockTemplate,
-    thumbnail: '/images/thumbnails/executive-template-thumbnail.svg',
-    description: 'Premium executive design for C-level professionals and senior management',
-    features: ['Executive styling', 'Premium design', 'Leadership focused', 'Professional appeal'],
-    atsOptimized: true,
-    popular: false,
-    featured: false
-  }
-]
+// Get templates from the new registry system (templates are now auto-registered)
+const allTemplates = getAllTemplates()
+console.log('DEBUG: Templates loaded:', allTemplates.length, allTemplates.map(t => t.id))
+export const templates = allTemplates
 
-// Helper function to get template by ID
+// Helper function to get template by ID - use the new system
 export const getTemplateById = (id: string): Template | undefined => {
-  return templates.find(template => template.id === id)
+  try {
+    return getTemplate(id)
+  } catch (error) {
+    console.warn('Error getting template by ID:', id, error)
+    return undefined
+  }
 }
 
-// Helper function to get templates by category
+// Helper function to get templates by category  
 export const getTemplatesByCategory = (category: string): Template[] => {
   if (category === 'all') return templates
-  return templates.filter(template => template.category.toLowerCase() === category.toLowerCase())
+  return templates.filter((template: any) => template.category.toLowerCase() === category.toLowerCase())
 }
 
-// Categories for filtering
+// Get categories from the new registry system
 export const categories = [
-  { id: 'all', name: 'All Templates', count: templates.length },
-  { id: 'professional', name: 'Professional', count: templates.filter(t => t.category === 'Professional').length },
-  { id: 'creative', name: 'Creative', count: templates.filter(t => t.category === 'Creative').length },
-  { id: 'technology', name: 'Technology', count: templates.filter(t => t.category === 'Technology').length },
-  { id: 'executive', name: 'Executive', count: templates.filter(t => t.category === 'Executive').length }
+  { id: 'all', name: 'All Templates', count: getAllTemplates().length },
+  ...templateCategories.map((cat: any) => ({
+    id: cat.id,
+    name: cat.name,
+    count: getTemplatesByCat(cat.id).length
+  }))
 ]
 
 export default templates

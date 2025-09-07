@@ -1,0 +1,728 @@
+/* Tech Innovator Template Styles */
+
+.template {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  line-height: var(--leading-normal);
+  padding: var(--spacing-lg);
+}
+
+/* Terminal Header */
+.header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.terminalWindow {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.terminalHeader {
+  background: var(--color-bg-accent);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.terminalButtons {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.terminalButton {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-error);
+}
+
+.terminalButton:nth-child(2) {
+  background: var(--color-warning);
+}
+
+.terminalButton:nth-child(3) {
+  background: var(--color-success);
+}
+
+.terminalTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+  flex: 1;
+  text-align: center;
+}
+
+.terminalContent {
+  padding: var(--spacing-lg);
+  font-family: var(--font-mono);
+}
+
+.terminalLine {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--text-small);
+}
+
+.prompt {
+  color: var(--color-primary);
+  font-weight: var(--font-bold);
+}
+
+.command {
+  color: var(--color-text-primary);
+}
+
+.name {
+  font-family: var(--font-mono);
+  font-size: var(--text-h1);
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-lg) 0;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-sm);
+  font-size: var(--text-small);
+}
+
+.contactItem {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.contactLabel {
+  color: var(--color-secondary);
+  font-weight: var(--font-semibold);
+  min-width: 80px;
+}
+
+.contactValue {
+  color: var(--color-text-primary);
+}
+
+.contactLink {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.contactLink:hover {
+  color: var(--color-accent);
+  text-shadow: 0 0 5px currentColor;
+}
+
+/* Section Styling */
+.section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-h2);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-lg) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.comment {
+  color: var(--color-text-muted);
+  font-weight: var(--font-normal);
+}
+
+/* Code Block Styling */
+.codeBlock {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  margin-bottom: var(--spacing-md);
+}
+
+.codeHeader {
+  background: var(--color-bg-accent);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.codeTitle {
+  color: var(--color-text-secondary);
+}
+
+.codeContent {
+  padding: var(--spacing-md);
+  font-family: var(--font-mono);
+}
+
+.summary {
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+/* Main Grid Layout */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: var(--spacing-xl);
+}
+
+.leftColumn {
+  min-width: 0;
+}
+
+.rightColumn {
+  min-width: 0;
+}
+
+/* Git Timeline */
+.gitTimeline {
+  position: relative;
+}
+
+.gitTimeline::before {
+  content: '';
+  position: absolute;
+  left: 35px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+}
+
+.commitItem {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+}
+
+.commitHash {
+  background: var(--color-bg-secondary);
+  color: var(--color-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  border: 1px solid var(--color-primary);
+  flex-shrink: 0;
+  width: 70px;
+  text-align: center;
+  height: fit-content;
+}
+
+.commitContent {
+  flex: 1;
+  background: var(--color-bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  position: relative;
+}
+
+.commitContent::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 20px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid var(--color-bg-secondary);
+}
+
+.commitHeader {
+  margin-bottom: var(--spacing-sm);
+}
+
+.position {
+  font-family: var(--font-heading);
+  font-size: var(--text-h3);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.commitMeta {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.branch {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+}
+
+.commitDate {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+}
+
+.commitLocation {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  margin-bottom: var(--spacing-sm);
+}
+
+.commitMessage {
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+  font-family: var(--font-body);
+}
+
+/* Repository Cards */
+.repoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.repoCard {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.repoCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+
+.repoCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.repoHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.repoIcon {
+  font-size: 1.2rem;
+}
+
+.repoName {
+  font-family: var(--font-mono);
+  font-size: var(--text-h4);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.repoLink {
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+.repoLink:hover {
+  color: var(--color-primary);
+  background: var(--color-bg-accent);
+}
+
+.repoDescription {
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--spacing-md) 0;
+  font-family: var(--font-body);
+}
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.techBadge {
+  background: var(--color-bg-accent);
+  color: var(--color-text-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  border: 1px solid var(--color-border);
+}
+
+.repoStats {
+  display: flex;
+  gap: var(--spacing-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+}
+
+.repoStat {
+  color: var(--color-text-secondary);
+}
+
+/* JSON Skills Styling */
+.jsonContent {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+}
+
+.jsonSection {
+  margin-bottom: var(--spacing-md);
+}
+
+.jsonKey {
+  color: var(--color-secondary);
+  font-weight: var(--font-semibold);
+}
+
+.jsonArray {
+  margin-left: var(--spacing-md);
+  margin-top: var(--spacing-xs);
+}
+
+.jsonItem {
+  padding: var(--spacing-xs) 0;
+  padding-left: var(--spacing-md);
+}
+
+.jsonString {
+  color: var(--color-primary);
+}
+
+/* Education Cards */
+.educationList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.educationCard {
+  display: flex;
+  gap: var(--spacing-md);
+  background: var(--color-bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.educationCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.educationIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.educationContent {
+  flex: 1;
+}
+
+.degree {
+  font-family: var(--font-heading);
+  font-size: var(--text-h4);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.institution {
+  color: var(--color-primary);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--spacing-sm);
+}
+
+.educationMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  font-size: var(--text-small);
+}
+
+.duration {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+}
+
+.gpa {
+  background: var(--color-success);
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-semibold);
+}
+
+.location {
+  color: var(--color-text-muted);
+}
+
+/* Languages with Progress Bars */
+.languageList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.languageItem {
+  background: var(--color-bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.languageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.languageName {
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.languageProficiency {
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+}
+
+.progressBar {
+  height: 8px;
+  background: var(--color-bg-accent);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 4px;
+  transition: width 1s ease;
+  position: relative;
+}
+
+.progressFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Custom Sections */
+.customText {
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+.customList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+}
+
+.customListItem {
+  padding: var(--spacing-xs) 0;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.listBullet {
+  color: var(--color-primary);
+  font-weight: var(--font-bold);
+}
+
+/* Certifications */
+.certificationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.certBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--color-bg-secondary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.certBadge:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.certIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.certText {
+  color: var(--color-text-primary);
+  font-size: var(--text-small);
+  font-weight: var(--font-medium);
+}
+
+/* Terminal Footer */
+.footer {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.terminalFooter {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.output {
+  color: var(--color-success);
+  margin-left: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .rightColumn {
+    order: -1;
+  }
+  
+  .repoGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .template {
+    padding: var(--spacing-md);
+  }
+  
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .commitMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .gitTimeline::before {
+    left: 25px;
+  }
+  
+  .commitHash {
+    width: 50px;
+    font-size: var(--text-xs);
+  }
+  
+  .certificationGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .template {
+    background: white !important;
+    color: black !important;
+    padding: 0;
+  }
+  
+  .terminalWindow,
+  .codeBlock,
+  .repoCard,
+  .educationCard,
+  .languageItem,
+  .certBadge {
+    background: white !important;
+    border-color: #ccc !important;
+  }
+  
+  .name {
+    color: black !important;
+    text-shadow: none !important;
+  }
+  
+  .section {
+    break-inside: avoid;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .terminalButtons {
+    display: none;
+  }
+  
+  .progressFill::after {
+    display: none;
+  }
+}
+

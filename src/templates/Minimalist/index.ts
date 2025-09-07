@@ -1,0 +1,2 @@
+export { MinimalistTemplate } from './MinimalistTemplate'
+

@@ -29,20 +29,16 @@ export default function ResumeBuilderPage() {
   const selectedTemplateId = useTemplateStore(state => state.selectedTemplateId)
   const selectTemplate = useTemplateStore(state => state.selectTemplate)
   
-  // If user directly navigated to this page without selecting a template,
-  // update the store with the current template ID
+  // Always sync the store with the current URL template ID
+  // The URL is the source of truth for which template to display
   useEffect(() => {
-    if (templateId && !selectedTemplateId) {
+    if (templateId) {
+      // Update the store to match the URL template
       selectTemplate(templateId)
     }
     
-    // If user has selected a different template than the URL, redirect
-    if (selectedTemplateId && templateId !== selectedTemplateId) {
-      router.replace(`/resume/builder/${selectedTemplateId}`)
-    }
-    
     setIsLoading(false)
-  }, [templateId, selectedTemplateId, selectTemplate, router])
+  }, [templateId, selectTemplate])
 
   // Resume data from store
   const resumeData = useResumeStore(state => state.data)
